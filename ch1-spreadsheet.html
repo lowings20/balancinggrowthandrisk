@@ -887,7 +887,7 @@
           <tr class="cumulative-row">
             <td class="row-header">Cumulative Cash Flow</td>
             ${p.cumulative.map(val => `<td class="${val < 0 ? 'cell-negative' : 'cell-positive'}">${val < 0 ? '($' + Math.abs(val) + 'M)' : '$' + val + 'M'}</td>`).join('')}
-            <td>—</td>
+            <td class="cell-positive">$${p.cumulative[p.cumulative.length - 1]}M</td>
           </tr>
         </tbody>
       `;
