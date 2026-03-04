@@ -478,6 +478,29 @@
       background: #fde68a;
     }
 
+    /* Rate dropdown in compare table */
+    .rate-dropdown {
+      padding: 6px 8px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      background: white;
+      cursor: pointer;
+      color: #1e40af;
+    }
+
+    .rate-dropdown:hover {
+      border-color: #3b82f6;
+    }
+
+    .rate-dropdown:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    }
+
     .compare-buttons-row td {
       background: white !important;
       border-top: none;
@@ -815,6 +838,23 @@
       renderCompareTable();
     }
 
+    function changeRateFromCompare(project, rateValue) {
+      if (!rateValue) return;
+      const rate = parseInt(rateValue);
+      selectedRates[project] = rate;
+      document.querySelector(`.project-btn[data-project="${project}"]`).classList.add('complete');
+
+      // If this is the current project in exercise tab, update that view too
+      if (project === currentProject) {
+        document.querySelectorAll('.rate-option').forEach(opt => opt.classList.remove('selected'));
+        document.querySelector(`.rate-option[data-rate="${rate}"]`).classList.add('selected');
+        document.getElementById('results-section').classList.add('unlocked');
+        updateResults();
+      }
+
+      renderCompareTable();
+    }
+
     function renderCFTable() {
       const p = PROJECTS[currentProject];
       const cfWithExit = [...p.cashFlows];
@@ -987,8 +1027,14 @@
           <td class="filled">$${p.totalCF}M</td>
           <td class="${key === ratioWinner ? 'winner' : 'filled'}">${p.ratio.toFixed(2)}x</td>
           <td class="${p.breakevenStart === minBreakeven ? 'winner' : 'filled'}">${p.breakevenLabel}</td>
-          <td class="${hasRate ? 'filled' : 'empty'}" onclick="${hasRate ? `goToProject('${key}')` : ''}">
-            ${hasRate ? `${rate}%<span class="cell-tooltip">Go to calculation</span>` : '—'}
+          <td class="filled">
+            <select class="rate-dropdown" onchange="changeRateFromCompare('${key}', this.value)">
+              <option value="" ${!hasRate ? 'selected' : ''}>Select...</option>
+              <option value="12" ${rate === 12 ? 'selected' : ''}>12%</option>
+              <option value="15" ${rate === 15 ? 'selected' : ''}>15%</option>
+              <option value="18" ${rate === 18 ? 'selected' : ''}>18%</option>
+              <option value="23" ${rate === 23 ? 'selected' : ''}>23%</option>
+            </select>
           </td>
           <td class="${hasRate ? (key === npvWinner ? 'winner' : 'filled') : 'empty'}" onclick="${hasRate ? `goToProject('${key}')` : ''}">
             ${hasRate ? `$${npv.toFixed(2)}M<span class="cell-tooltip">Go to calculation</span>` : '—'}
