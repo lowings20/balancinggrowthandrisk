@@ -89,6 +89,16 @@
       color: #111827;
     }
 
+    .tab .progress {
+      font-weight: 400;
+      color: #9ca3af;
+      margin-left: 6px;
+    }
+
+    .tab .progress.complete {
+      color: #22c55e;
+    }
+
     .tab-content {
       display: none;
       background: white;
@@ -101,48 +111,48 @@
       display: block;
     }
 
-    /* Project selector */
-    .project-selector {
+    /* Project card */
+    .project-card {
+      margin-bottom: 32px;
+      padding-bottom: 32px;
+      border-bottom: 2px solid var(--cell-border);
+    }
+
+    .project-card:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .project-header {
       display: flex;
-      gap: 8px;
-      margin-bottom: 20px;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
     }
 
-    .project-btn {
-      flex: 1;
-      padding: 12px;
-      background: white;
-      border: 2px solid var(--cell-border);
-      border-radius: 6px;
-      cursor: pointer;
-      text-align: center;
-      font-family: inherit;
+    .project-icon {
+      font-size: 28px;
     }
 
-    .project-btn:hover {
-      border-color: #9ca3af;
-    }
-
-    .project-btn.active {
-      border-color: #3b82f6;
-      background: #eff6ff;
-    }
-
-    .project-btn .name {
-      font-size: 13px;
-      font-weight: 600;
+    .project-name {
+      font-size: 18px;
+      font-weight: 700;
       color: #111827;
     }
 
-    .project-btn .status {
-      font-size: 11px;
+    .project-status {
+      font-size: 12px;
+      font-weight: 600;
       color: #22c55e;
-      margin-top: 4px;
+      background: #dcfce7;
+      padding: 4px 10px;
+      border-radius: 12px;
       display: none;
     }
 
-    .project-btn.complete .status {
-      display: block;
+    .project-card.complete .project-status {
+      display: inline-block;
     }
 
     /* Table */
@@ -150,7 +160,7 @@
       width: 100%;
       border-collapse: collapse;
       font-size: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .sheet-table th,
@@ -214,29 +224,15 @@
 
     /* Input section */
     .input-section {
-      background: white;
-      border-top: 1px solid var(--cell-border);
-      padding: 20px 0;
-      margin-bottom: 16px;
-    }
-
-    .input-section h3 {
-      font-size: 12px;
-      font-weight: 600;
-      color: #6b7280;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 16px;
-    }
-
-    .input-row {
       display: flex;
+      flex-wrap: wrap;
       gap: 16px;
       align-items: flex-end;
     }
 
     .input-group {
       flex: 1;
+      min-width: 140px;
     }
 
     .input-label {
@@ -252,7 +248,7 @@
     }
 
     .input-wrapper input {
-      width: 80px;
+      width: 70px;
       padding: 8px 10px;
       font-size: 14px;
       font-weight: 600;
@@ -284,7 +280,7 @@
       background: #e5e7eb;
       border-radius: 4px;
       color: #374151;
-      min-width: 70px;
+      min-width: 60px;
       text-align: center;
     }
 
@@ -293,17 +289,8 @@
       color: #1e40af;
     }
 
-    .breakeven-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      color: #374151;
-      margin-top: 12px;
-    }
-
-    .breakeven-row select {
-      padding: 6px 10px;
+    .input-wrapper select {
+      padding: 8px 10px;
       font-size: 13px;
       font-family: inherit;
       border: 1px solid var(--input-border);
@@ -311,9 +298,13 @@
       background: var(--input-bg);
     }
 
-    .breakeven-row select.correct {
+    .input-wrapper select.correct {
       border-color: var(--correct-border);
       background: var(--correct-bg);
+    }
+
+    .input-wrapper select:disabled {
+      opacity: 0.4;
     }
 
     /* Compare tab */
@@ -430,32 +421,7 @@
     }
 
     .compare-table td.filled {
-      cursor: pointer;
       position: relative;
-    }
-
-    .compare-table td.filled:hover {
-      background: #e5e7eb;
-    }
-
-    .cell-tooltip {
-      display: none;
-      position: absolute;
-      bottom: calc(100% + 4px);
-      left: 50%;
-      transform: translateX(-50%);
-      background: #374151;
-      color: white;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 11px;
-      white-space: nowrap;
-      z-index: 100;
-    }
-
-    .compare-table td.filled:hover .cell-tooltip,
-    .compare-table td.winner:hover .cell-tooltip {
-      display: block;
     }
 
     .compare-table td.winner {
@@ -463,11 +429,6 @@
       font-weight: 700;
     }
 
-    .compare-table td.winner:hover {
-      background: #fde68a;
-    }
-
-    /* Compare buttons row */
     .compare-buttons-row td {
       background: white !important;
       border-top: none;
@@ -546,12 +507,12 @@
     }
 
     @media (max-width: 700px) {
-      .project-selector {
+      .input-section {
         flex-direction: column;
+        align-items: stretch;
       }
-      .input-row {
-        flex-direction: column;
-        gap: 12px;
+      .input-group {
+        min-width: 100%;
       }
     }
   </style>
@@ -564,35 +525,24 @@
 
     <div class="tabs">
       <button class="tab active" onclick="switchTab('exercise')">Exercise</button>
-      <button class="tab" id="compare-tab" onclick="switchTab('compare')">Compare All</button>
+      <button class="tab" id="compare-tab" onclick="switchTab('compare')">Compare All <span class="progress" id="progress-count">(0 of 3)</span></button>
     </div>
 
     <div class="tab-content active" id="exercise-tab">
-      <div class="project-selector">
-        <button class="project-btn active" data-project="nomadic" onclick="selectProject('nomadic')">
-          <div class="name">🚐 Nomadic Nation</div>
-          <div class="status">✓ Complete</div>
-        </button>
-        <button class="project-btn" data-project="shadow" onclick="selectProject('shadow')">
-          <div class="name">🎬 The Shadow Protocol</div>
-          <div class="status">✓ Complete</div>
-        </button>
-        <button class="project-btn" data-project="silk" onclick="selectProject('silk')">
-          <div class="name">👗 Silk and Mahogany</div>
-          <div class="status">✓ Complete</div>
-        </button>
-      </div>
-
-      <table class="sheet-table" id="cf-table"></table>
-
-      <div class="input-section">
-        <h3>Your Calculations</h3>
-        <div class="input-row">
+      <!-- Nomadic Nation -->
+      <div class="project-card" id="card-nomadic">
+        <div class="project-header">
+          <span class="project-icon">🚐</span>
+          <span class="project-name">Nomadic Nation</span>
+          <span class="project-status">Complete</span>
+        </div>
+        <table class="sheet-table" id="table-nomadic"></table>
+        <div class="input-section">
           <div class="input-group">
             <div class="input-label">1. Investment (Cash Used)</div>
             <div class="input-wrapper">
               <span class="unit">$</span>
-              <input type="number" id="investment-input" placeholder="0" oninput="checkInputs()">
+              <input type="number" id="inv-nomadic" placeholder="0" oninput="checkInputs('nomadic')">
               <span class="unit">M</span>
             </div>
           </div>
@@ -600,28 +550,119 @@
             <div class="input-label">2. Cash Produced</div>
             <div class="input-wrapper">
               <span class="unit">$</span>
-              <input type="number" id="totalcf-input" placeholder="0" step="0.1" oninput="checkInputs()">
+              <input type="number" id="cf-nomadic" placeholder="0" step="0.1" oninput="checkInputs('nomadic')">
               <span class="unit">M</span>
             </div>
           </div>
           <div class="input-group">
-            <div class="input-label">3. Cash Produced / Cash Invested</div>
-            <div class="calculated-value" id="ratio-display">—</div>
+            <div class="input-label">3. Ratio</div>
+            <div class="calculated-value" id="ratio-nomadic">—</div>
           </div>
-        </div>
-        <div class="breakeven-row" id="breakeven-row" style="margin-top: 16px; opacity: 0.4; pointer-events: none;">
-          <span>4. Breakeven (Estimated)</span>
-          <select id="breakeven-select" onchange="checkBreakeven()">
-            <option value="">Select...</option>
-            <option value="0-1">Year 0–1</option>
-            <option value="1-2">Year 1–2</option>
-            <option value="2-3">Year 2–3</option>
-            <option value="3-4">Year 3–4</option>
-            <option value="4-5">Year 4–5</option>
-          </select>
+          <div class="input-group">
+            <div class="input-label">4. Breakeven</div>
+            <div class="input-wrapper">
+              <select id="be-nomadic" onchange="checkBreakeven('nomadic')" disabled>
+                <option value="">Select...</option>
+                <option value="0-1">Year 0–1</option>
+                <option value="1-2">Year 1–2</option>
+                <option value="2-3">Year 2–3</option>
+                <option value="3-4">Year 3–4</option>
+                <option value="4-5">Year 4–5</option>
+              </select>
+            </div>
+          </div>
         </div>
       </div>
 
+      <!-- The Shadow Protocol -->
+      <div class="project-card" id="card-shadow">
+        <div class="project-header">
+          <span class="project-icon">🎬</span>
+          <span class="project-name">The Shadow Protocol</span>
+          <span class="project-status">Complete</span>
+        </div>
+        <table class="sheet-table" id="table-shadow"></table>
+        <div class="input-section">
+          <div class="input-group">
+            <div class="input-label">1. Investment (Cash Used)</div>
+            <div class="input-wrapper">
+              <span class="unit">$</span>
+              <input type="number" id="inv-shadow" placeholder="0" oninput="checkInputs('shadow')">
+              <span class="unit">M</span>
+            </div>
+          </div>
+          <div class="input-group">
+            <div class="input-label">2. Cash Produced</div>
+            <div class="input-wrapper">
+              <span class="unit">$</span>
+              <input type="number" id="cf-shadow" placeholder="0" step="0.1" oninput="checkInputs('shadow')">
+              <span class="unit">M</span>
+            </div>
+          </div>
+          <div class="input-group">
+            <div class="input-label">3. Ratio</div>
+            <div class="calculated-value" id="ratio-shadow">—</div>
+          </div>
+          <div class="input-group">
+            <div class="input-label">4. Breakeven</div>
+            <div class="input-wrapper">
+              <select id="be-shadow" onchange="checkBreakeven('shadow')" disabled>
+                <option value="">Select...</option>
+                <option value="0-1">Year 0–1</option>
+                <option value="1-2">Year 1–2</option>
+                <option value="2-3">Year 2–3</option>
+                <option value="3-4">Year 3–4</option>
+                <option value="4-5">Year 4–5</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Silk and Mahogany -->
+      <div class="project-card" id="card-silk">
+        <div class="project-header">
+          <span class="project-icon">👗</span>
+          <span class="project-name">Silk and Mahogany</span>
+          <span class="project-status">Complete</span>
+        </div>
+        <table class="sheet-table" id="table-silk"></table>
+        <div class="input-section">
+          <div class="input-group">
+            <div class="input-label">1. Investment (Cash Used)</div>
+            <div class="input-wrapper">
+              <span class="unit">$</span>
+              <input type="number" id="inv-silk" placeholder="0" oninput="checkInputs('silk')">
+              <span class="unit">M</span>
+            </div>
+          </div>
+          <div class="input-group">
+            <div class="input-label">2. Cash Produced</div>
+            <div class="input-wrapper">
+              <span class="unit">$</span>
+              <input type="number" id="cf-silk" placeholder="0" step="0.1" oninput="checkInputs('silk')">
+              <span class="unit">M</span>
+            </div>
+          </div>
+          <div class="input-group">
+            <div class="input-label">3. Ratio</div>
+            <div class="calculated-value" id="ratio-silk">—</div>
+          </div>
+          <div class="input-group">
+            <div class="input-label">4. Breakeven</div>
+            <div class="input-wrapper">
+              <select id="be-silk" onchange="checkBreakeven('silk')" disabled>
+                <option value="">Select...</option>
+                <option value="0-1">Year 0–1</option>
+                <option value="1-2">Year 1–2</option>
+                <option value="2-3">Year 2–3</option>
+                <option value="3-4">Year 3–4</option>
+                <option value="4-5">Year 4–5</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="tab-content" id="compare-tab-content">
@@ -631,33 +672,31 @@
             <th>Project</th>
             <th>
               <div class="header-content">
-                Investment (Cash Used)
-                <span class="info-icon">i<span class="info-tooltip">The total upfront capital required to fund the project before any returns come in.</span></span>
+                Investment
+                <span class="info-icon">i<span class="info-tooltip">The total upfront capital required to fund the project.</span></span>
               </div>
             </th>
             <th>
               <div class="header-content">
                 Cash Produced
-                <span class="info-icon">i<span class="info-tooltip">The total cash returned over the project's lifetime, including exit value.</span></span>
+                <span class="info-icon">i<span class="info-tooltip">Total cash returned over the project's lifetime, including exit value.</span></span>
               </div>
             </th>
             <th>
               <div class="header-content">
-                Cash Produced / Cash Invested
-                <span class="info-icon">i<span class="info-tooltip">How many dollars you get back for every dollar invested. Higher is better.</span></span>
+                Ratio
+                <span class="info-icon">i<span class="info-tooltip">Cash Produced / Cash Invested. Higher is better.</span></span>
               </div>
             </th>
             <th>
               <div class="header-content">
-                Breakeven (Estimated)
-                <span class="info-icon">i<span class="info-tooltip">When cumulative cash flow turns positive, meaning you've recovered your initial investment.</span></span>
+                Breakeven
+                <span class="info-icon">i<span class="info-tooltip">When cumulative cash flow turns positive.</span></span>
               </div>
             </th>
           </tr>
         </thead>
-        <tbody id="compare-body">
-          <!-- Populated by JS -->
-        </tbody>
+        <tbody id="compare-body"></tbody>
       </table>
     </div>
 
@@ -721,55 +760,30 @@
     };
 
     const COLUMN_INSIGHTS = {
-      investment: {
-        title: 'Investment Comparison',
-        text: 'Shadow Protocol requires 6x more capital ($50M) than Nomadic Nation ($8M)—a major consideration if funds are limited.'
-      },
-      produced: {
-        title: 'Cash Produced Comparison',
-        text: 'Shadow Protocol generates the most cash ($115M), followed by Silk ($52M) and Nomadic Nation ($11.5M).'
-      },
-      ratio: {
-        title: 'Cash Produced / Cash Invested Comparison',
-        text: 'Shadow Protocol wins on efficiency (2.30x), returning $2.30 for every $1 invested vs. $2.08 for Silk and $1.44 for Nomadic Nation.'
-      },
-      breakeven: {
-        title: 'Breakeven Comparison',
-        text: 'Nomadic Nation and Silk break even quickly (Year 1–2); Shadow Protocol takes until Year 3–4 to recover its investment.'
-      }
+      investment: { title: 'Investment Comparison', text: 'Shadow Protocol requires 6x more capital ($50M) than Nomadic Nation ($8M).' },
+      produced: { title: 'Cash Produced Comparison', text: 'Shadow Protocol generates the most cash ($115M), followed by Silk ($52M) and Nomadic Nation ($11.5M).' },
+      ratio: { title: 'Ratio Comparison', text: 'Shadow Protocol wins on efficiency (2.30x), returning $2.30 for every $1 invested.' },
+      breakeven: { title: 'Breakeven Comparison', text: 'Nomadic Nation and Silk break even quickly (Year 1–2); Shadow Protocol takes until Year 3–4.' }
     };
 
-    let currentProject = 'nomadic';
+    const exitDescriptions = {
+      nomadic: 'Format Licensing Rights: The format can be licensed to international markets, generating ongoing revenue from adaptations.',
+      shadow: 'Franchise & Sequel Rights: The IP value of sequel potential, merchandise, and spin-offs creates substantial residual value.',
+      silk: 'Catalog & International Rights: The series becomes a catalog asset with perpetual streaming value.'
+    };
+
+    let completedProjects = { nomadic: false, shadow: false, silk: false };
     let completedData = {
       nomadic: { investment: false, produced: false, ratio: false, breakeven: false },
       shadow: { investment: false, produced: false, ratio: false, breakeven: false },
       silk: { investment: false, produced: false, ratio: false, breakeven: false }
     };
 
-    function selectProject(project) {
-      currentProject = project;
-      document.querySelectorAll('.project-btn').forEach(btn => btn.classList.remove('active'));
-      document.querySelector(`.project-btn[data-project="${project}"]`).classList.add('active');
-
-      document.getElementById('investment-input').value = '';
-      document.getElementById('totalcf-input').value = '';
-      document.getElementById('ratio-display').textContent = '—';
-      document.getElementById('ratio-display').classList.remove('active');
-      document.getElementById('investment-input').classList.remove('correct');
-      document.getElementById('totalcf-input').classList.remove('correct');
-      document.getElementById('breakeven-select').value = '';
-      document.getElementById('breakeven-select').classList.remove('correct');
-      document.getElementById('breakeven-row').style.opacity = '0.4';
-      document.getElementById('breakeven-row').style.pointerEvents = 'none';
-
-      renderCFTable();
-    }
-
-    function renderCFTable() {
-      const p = PROJECTS[currentProject];
+    function renderTable(key) {
+      const p = PROJECTS[key];
       const totalCFWithExit = p.cashFlows.map((cf, i) => i === 4 ? cf + p.exitValue : cf);
 
-      document.getElementById('cf-table').innerHTML = `
+      document.getElementById(`table-${key}`).innerHTML = `
         <thead>
           <tr>
             <th class="row-header"></th>
@@ -778,7 +792,7 @@
             <th>Year 2</th>
             <th>Year 3</th>
             <th>Year 4</th>
-            <th class="clickable-header" onclick="showExitValueModal()">Year 5<span class="click-hint">click for details</span></th>
+            <th class="clickable-header" onclick="showExitModal('${key}')">Year 5<span class="click-hint">click for details</span></th>
             <th>Total</th>
           </tr>
         </thead>
@@ -816,65 +830,64 @@
       `;
     }
 
-    function checkInputs() {
-      const p = PROJECTS[currentProject];
-      const inv = parseFloat(document.getElementById('investment-input').value);
-      const tcf = parseFloat(document.getElementById('totalcf-input').value);
+    function checkInputs(key) {
+      const p = PROJECTS[key];
+      const inv = parseFloat(document.getElementById(`inv-${key}`).value);
+      const cf = parseFloat(document.getElementById(`cf-${key}`).value);
 
       const invCorrect = Math.abs(inv - p.investment) < 0.01;
-      const tcfCorrect = Math.abs(tcf - p.totalCF) < 0.1;
+      const cfCorrect = Math.abs(cf - p.totalCF) < 0.1;
 
-      document.getElementById('investment-input').classList.toggle('correct', invCorrect);
-      document.getElementById('totalcf-input').classList.toggle('correct', tcfCorrect);
+      document.getElementById(`inv-${key}`).classList.toggle('correct', invCorrect);
+      document.getElementById(`cf-${key}`).classList.toggle('correct', cfCorrect);
 
-      // Update completed data
-      if (invCorrect) completedData[currentProject].investment = true;
-      if (tcfCorrect) completedData[currentProject].produced = true;
+      if (invCorrect) completedData[key].investment = true;
+      if (cfCorrect) completedData[key].produced = true;
 
-      if (inv > 0 && tcf > 0) {
-        const ratio = tcf / inv;
-        document.getElementById('ratio-display').textContent = ratio.toFixed(2) + 'x';
-        document.getElementById('ratio-display').classList.add('active');
-        if (invCorrect && tcfCorrect) {
-          completedData[currentProject].ratio = true;
-        }
+      if (inv > 0 && cf > 0) {
+        const ratio = cf / inv;
+        document.getElementById(`ratio-${key}`).textContent = ratio.toFixed(2) + 'x';
+        document.getElementById(`ratio-${key}`).classList.add('active');
+        if (invCorrect && cfCorrect) completedData[key].ratio = true;
       } else {
-        document.getElementById('ratio-display').textContent = '—';
-        document.getElementById('ratio-display').classList.remove('active');
+        document.getElementById(`ratio-${key}`).textContent = '—';
+        document.getElementById(`ratio-${key}`).classList.remove('active');
       }
 
-      if (invCorrect && tcfCorrect) {
-        document.getElementById('breakeven-row').style.opacity = '1';
-        document.getElementById('breakeven-row').style.pointerEvents = 'auto';
-      } else {
-        document.getElementById('breakeven-row').style.opacity = '0.4';
-        document.getElementById('breakeven-row').style.pointerEvents = 'none';
-      }
-
+      document.getElementById(`be-${key}`).disabled = !(invCorrect && cfCorrect);
+      updateProgress();
       renderCompareTable();
     }
 
-    function checkBreakeven() {
-      const p = PROJECTS[currentProject];
-      const selected = document.getElementById('breakeven-select').value;
+    function checkBreakeven(key) {
+      const p = PROJECTS[key];
+      const selected = document.getElementById(`be-${key}`).value;
       const correct = `${p.breakevenStart}-${p.breakevenEnd}`;
 
       const isCorrect = selected === correct;
-      document.getElementById('breakeven-select').classList.toggle('correct', isCorrect);
+      document.getElementById(`be-${key}`).classList.toggle('correct', isCorrect);
 
       if (isCorrect) {
-        completedData[currentProject].breakeven = true;
-        document.querySelector(`.project-btn[data-project="${currentProject}"]`).classList.add('complete');
+        completedData[key].breakeven = true;
+        completedProjects[key] = true;
+        document.getElementById(`card-${key}`).classList.add('complete');
       }
 
+      updateProgress();
       renderCompareTable();
+    }
+
+    function updateProgress() {
+      const count = Object.values(completedProjects).filter(Boolean).length;
+      const el = document.getElementById('progress-count');
+      el.textContent = `(${count} of 3)`;
+      el.classList.toggle('complete', count === 3);
     }
 
     function renderCompareTable() {
       const tbody = document.getElementById('compare-body');
       let html = '';
 
-      // Check if columns are complete
       const colComplete = {
         investment: completedData.nomadic.investment && completedData.shadow.investment && completedData.silk.investment,
         produced: completedData.nomadic.produced && completedData.shadow.produced && completedData.silk.produced,
@@ -894,22 +907,13 @@
               ${rowComplete ? `<button class="analyze-btn" onclick="showAnalyze('${key}')">Analyze</button>` : ''}
             </div>
           </td>
-          <td class="${d.investment ? 'filled' : 'empty'}" onclick="${d.investment ? `goToProject('${key}')` : ''}">
-            ${d.investment ? `$${p.investment}M<span class="cell-tooltip">Go to calculation</span>` : '—'}
-          </td>
-          <td class="${d.produced ? 'filled' : 'empty'}" onclick="${d.produced ? `goToProject('${key}')` : ''}">
-            ${d.produced ? `$${p.totalCF}M<span class="cell-tooltip">Go to calculation</span>` : '—'}
-          </td>
-          <td class="${d.ratio ? (p.ratio === 2.30 ? 'winner' : 'filled') : 'empty'}" onclick="${d.ratio ? `goToProject('${key}')` : ''}">
-            ${d.ratio ? `${p.ratio.toFixed(2)}x<span class="cell-tooltip">Go to calculation</span>` : '—'}
-          </td>
-          <td class="${d.breakeven ? 'filled' : 'empty'}" onclick="${d.breakeven ? `goToProject('${key}')` : ''}">
-            ${d.breakeven ? `${p.breakevenLabel}<span class="cell-tooltip">Go to calculation</span>` : '—'}
-          </td>
+          <td class="${d.investment ? 'filled' : 'empty'}">${d.investment ? `$${p.investment}M` : '—'}</td>
+          <td class="${d.produced ? 'filled' : 'empty'}">${d.produced ? `$${p.totalCF}M` : '—'}</td>
+          <td class="${d.ratio ? (p.ratio === 2.30 ? 'winner' : 'filled') : 'empty'}">${d.ratio ? `${p.ratio.toFixed(2)}x` : '—'}</td>
+          <td class="${d.breakeven ? (p.breakevenStart === 1 ? 'winner' : 'filled') : 'empty'}">${d.breakeven ? p.breakevenLabel : '—'}</td>
         </tr>`;
       });
 
-      // Compare buttons row
       html += `<tr class="compare-buttons-row">
         <td></td>
         <td>${colComplete.investment ? `<button class="compare-btn" onclick="showCompare('investment')">Compare</button>` : ''}</td>
@@ -921,38 +925,28 @@
       tbody.innerHTML = html;
     }
 
-    function goToProject(project) {
-      switchTab('exercise');
-      selectProject(project);
+    function showExitModal(key) {
+      const p = PROJECTS[key];
+      document.getElementById('modal-title').textContent = `Exit Value: $${p.exitValue}M`;
+      document.getElementById('modal-text').textContent = exitDescriptions[key];
+      document.getElementById('modal-overlay').classList.add('show');
     }
 
-    function showAnalyze(project) {
-      const p = PROJECTS[project];
+    function showAnalyze(key) {
+      const p = PROJECTS[key];
       document.getElementById('modal-title').textContent = `${p.icon} ${p.name}`;
       document.getElementById('modal-text').textContent = p.rowInsight;
       document.getElementById('modal-overlay').classList.add('show');
     }
 
-    function showCompare(column) {
-      document.getElementById('modal-title').textContent = COLUMN_INSIGHTS[column].title;
-      document.getElementById('modal-text').textContent = COLUMN_INSIGHTS[column].text;
+    function showCompare(col) {
+      document.getElementById('modal-title').textContent = COLUMN_INSIGHTS[col].title;
+      document.getElementById('modal-text').textContent = COLUMN_INSIGHTS[col].text;
       document.getElementById('modal-overlay').classList.add('show');
     }
 
     function closeModal() {
       document.getElementById('modal-overlay').classList.remove('show');
-    }
-
-    function showExitValueModal() {
-      const p = PROJECTS[currentProject];
-      const exitDescriptions = {
-        nomadic: 'Format Licensing Rights: The format can be licensed to international markets, generating ongoing revenue from adaptations in other countries.',
-        shadow: 'Franchise & Sequel Rights: The IP value of sequel potential, merchandise, spin-offs, and theme park attractions creates substantial residual value.',
-        silk: 'Catalog & International Rights: The series becomes a catalog asset with perpetual streaming value and international distribution deals.'
-      };
-      document.getElementById('modal-title').textContent = `Exit Value: $${p.exitValue}M`;
-      document.getElementById('modal-text').textContent = exitDescriptions[currentProject];
-      document.getElementById('modal-overlay').classList.add('show');
     }
 
     function switchTab(tab) {
@@ -967,7 +961,8 @@
       }
     }
 
-    renderCFTable();
+    // Initialize
+    ['nomadic', 'shadow', 'silk'].forEach(renderTable);
     renderCompareTable();
   </script>
 </body>
