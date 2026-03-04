@@ -180,24 +180,53 @@
     .cell-zero { color: #9ca3af; }
 
     .exit-row td {
-      background: #fefce8 !important;
-      font-style: italic;
+      background: #fafafa !important;
+      color: #6b7280;
+      font-size: 11px;
+    }
+
+    .total-row td {
+      font-weight: 600;
+      border-top: 2px solid #374151 !important;
+    }
+
+    .cumulative-row td {
+      background: #f8fafc !important;
+      border-top: 1px dashed #d1d5db !important;
+    }
+
+    .clickable-header {
+      cursor: pointer;
+      position: relative;
+    }
+
+    .clickable-header:hover {
+      background: #e0e7ff !important;
+    }
+
+    .clickable-header .click-hint {
+      display: block;
+      font-size: 9px;
+      font-weight: 400;
+      color: #6b7280;
+      margin-top: 2px;
     }
 
     /* Input section */
     .input-section {
-      background: #fafafa;
-      border: 1px solid var(--cell-border);
-      border-radius: 6px;
-      padding: 16px;
+      background: white;
+      border-top: 1px solid var(--cell-border);
+      padding: 20px 0;
       margin-bottom: 16px;
     }
 
     .input-section h3 {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
-      color: #374151;
-      margin-bottom: 12px;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
     }
 
     .input-row {
@@ -262,29 +291,6 @@
     .calculated-value.active {
       background: #dbeafe;
       color: #1e40af;
-    }
-
-    /* Cumulative section */
-    .cumulative-section {
-      background: #fafafa;
-      border: 1px solid var(--cell-border);
-      border-radius: 6px;
-      padding: 16px;
-      margin-bottom: 16px;
-      opacity: 0.4;
-      pointer-events: none;
-    }
-
-    .cumulative-section.unlocked {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .cumulative-section h3 {
-      font-size: 13px;
-      font-weight: 600;
-      color: #374151;
-      margin-bottom: 12px;
     }
 
     .breakeven-row {
@@ -668,29 +674,15 @@
             <div class="calculated-value" id="ratio-display">—</div>
           </div>
         </div>
-      </div>
-
-      <div class="cumulative-section" id="cumulative-section">
-        <h3>Cumulative Cash Flow</h3>
-        <table class="sheet-table" id="cumulative-table"></table>
-        <div class="breakeven-row">
-          <span>Breakeven (Estimated) occurs between</span>
-          <select id="breakeven-start" onchange="checkBreakeven()">
-            <option value="">Year...</option>
-            <option value="0">Year 0</option>
-            <option value="1">Year 1</option>
-            <option value="2">Year 2</option>
-            <option value="3">Year 3</option>
-            <option value="4">Year 4</option>
-          </select>
-          <span>and</span>
-          <select id="breakeven-end" onchange="checkBreakeven()">
-            <option value="">Year...</option>
-            <option value="1">Year 1</option>
-            <option value="2">Year 2</option>
-            <option value="3">Year 3</option>
-            <option value="4">Year 4</option>
-            <option value="5">Year 5</option>
+        <div class="breakeven-row" id="breakeven-row" style="margin-top: 16px; opacity: 0.4; pointer-events: none;">
+          <span>4. Breakeven (Estimated)</span>
+          <select id="breakeven-select" onchange="checkBreakeven()">
+            <option value="">Select...</option>
+            <option value="0-1">Year 0–1</option>
+            <option value="1-2">Year 1–2</option>
+            <option value="2-3">Year 2–3</option>
+            <option value="3-4">Year 3–4</option>
+            <option value="4-5">Year 4–5</option>
           </select>
         </div>
       </div>
@@ -841,19 +833,19 @@
       document.getElementById('ratio-display').classList.remove('active');
       document.getElementById('investment-input').classList.remove('correct');
       document.getElementById('totalcf-input').classList.remove('correct');
-      document.getElementById('breakeven-start').value = '';
-      document.getElementById('breakeven-end').value = '';
-      document.getElementById('breakeven-start').classList.remove('correct');
-      document.getElementById('breakeven-end').classList.remove('correct');
-      document.getElementById('cumulative-section').classList.remove('unlocked');
+      document.getElementById('breakeven-select').value = '';
+      document.getElementById('breakeven-select').classList.remove('correct');
+      document.getElementById('breakeven-row').style.opacity = '0.4';
+      document.getElementById('breakeven-row').style.pointerEvents = 'none';
       document.getElementById('chart-section').classList.remove('show');
 
       renderCFTable();
-      renderCumulativeTable();
     }
 
     function renderCFTable() {
       const p = PROJECTS[currentProject];
+      const totalCFWithExit = p.cashFlows.map((cf, i) => i === 4 ? cf + p.exitValue : cf);
+
       document.getElementById('cf-table').innerHTML = `
         <thead>
           <tr>
@@ -863,7 +855,7 @@
             <th>Year 2</th>
             <th>Year 3</th>
             <th>Year 4</th>
-            <th>Year 5</th>
+            <th class="clickable-header" onclick="showExitValueModal()">Year 5<span class="click-hint">click for details</span></th>
             <th>Total</th>
           </tr>
         </thead>
@@ -881,33 +873,21 @@
             <td class="cell-positive">$${p.cashFlows.reduce((a,b)=>a+b,0)}M</td>
           </tr>
           <tr class="exit-row">
-            <td class="row-header">Exit Value (${p.exitLabel})</td>
+            <td class="row-header">+ Exit Value</td>
             <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
             <td class="cell-positive">$${p.exitValue}M</td>
             <td class="cell-positive">$${p.exitValue}M</td>
           </tr>
-        </tbody>
-      `;
-    }
-
-    function renderCumulativeTable() {
-      const p = PROJECTS[currentProject];
-      document.getElementById('cumulative-table').innerHTML = `
-        <thead>
-          <tr>
-            <th class="row-header"></th>
-            <th>Year 0</th>
-            <th>Year 1</th>
-            <th>Year 2</th>
-            <th>Year 3</th>
-            <th>Year 4</th>
-            <th>Year 5</th>
+          <tr class="total-row">
+            <td class="row-header">Total Cash Flow</td>
+            <td class="cell-negative">($${p.investment}M)</td>
+            ${totalCFWithExit.map(cf => `<td class="${cf > 0 ? 'cell-positive' : 'cell-zero'}">${cf > 0 ? '$' + cf + 'M' : '$0'}</td>`).join('')}
+            <td class="cell-positive">$${p.totalCF}M</td>
           </tr>
-        </thead>
-        <tbody>
-          <tr>
+          <tr class="cumulative-row">
             <td class="row-header">Cumulative Cash Flow</td>
             ${p.cumulative.map(val => `<td class="${val < 0 ? 'cell-negative' : 'cell-positive'}">${val < 0 ? '($' + Math.abs(val) + 'M)' : '$' + val + 'M'}</td>`).join('')}
+            <td>—</td>
           </tr>
         </tbody>
       `;
@@ -941,9 +921,11 @@
       }
 
       if (invCorrect && tcfCorrect) {
-        document.getElementById('cumulative-section').classList.add('unlocked');
+        document.getElementById('breakeven-row').style.opacity = '1';
+        document.getElementById('breakeven-row').style.pointerEvents = 'auto';
       } else {
-        document.getElementById('cumulative-section').classList.remove('unlocked');
+        document.getElementById('breakeven-row').style.opacity = '0.4';
+        document.getElementById('breakeven-row').style.pointerEvents = 'none';
         document.getElementById('chart-section').classList.remove('show');
       }
 
@@ -952,16 +934,13 @@
 
     function checkBreakeven() {
       const p = PROJECTS[currentProject];
-      const start = parseInt(document.getElementById('breakeven-start').value);
-      const end = parseInt(document.getElementById('breakeven-end').value);
+      const selected = document.getElementById('breakeven-select').value;
+      const correct = `${p.breakevenStart}-${p.breakevenEnd}`;
 
-      const startOK = start === p.breakevenStart;
-      const endOK = end === p.breakevenEnd;
+      const isCorrect = selected === correct;
+      document.getElementById('breakeven-select').classList.toggle('correct', isCorrect);
 
-      document.getElementById('breakeven-start').classList.toggle('correct', startOK);
-      document.getElementById('breakeven-end').classList.toggle('correct', endOK);
-
-      if (startOK && endOK) {
+      if (isCorrect) {
         completedData[currentProject].breakeven = true;
         document.querySelector(`.project-btn[data-project="${currentProject}"]`).classList.add('complete');
         document.getElementById('chart-section').classList.add('show');
@@ -1042,6 +1021,18 @@
 
     function closeModal() {
       document.getElementById('modal-overlay').classList.remove('show');
+    }
+
+    function showExitValueModal() {
+      const p = PROJECTS[currentProject];
+      const exitDescriptions = {
+        nomadic: 'Format Licensing Rights: The format can be licensed to international markets, generating ongoing revenue from adaptations in other countries.',
+        shadow: 'Franchise & Sequel Rights: The IP value of sequel potential, merchandise, spin-offs, and theme park attractions creates substantial residual value.',
+        silk: 'Catalog & International Rights: The series becomes a catalog asset with perpetual streaming value and international distribution deals.'
+      };
+      document.getElementById('modal-title').textContent = `Exit Value: $${p.exitValue}M`;
+      document.getElementById('modal-text').textContent = exitDescriptions[currentProject];
+      document.getElementById('modal-overlay').classList.add('show');
     }
 
     function renderChart() {
@@ -1125,11 +1116,9 @@
         document.getElementById('compare-tab').classList.add('active');
         document.getElementById('compare-tab-content').classList.add('active');
       }
-      document.getElementById('insight-row').classList.remove('show');
     }
 
     renderCFTable();
-    renderCumulativeTable();
     renderCompareTable();
   </script>
 </body>
