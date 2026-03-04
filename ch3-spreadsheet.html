@@ -45,56 +45,69 @@
       margin: 0 auto;
     }
 
-    h1 {
+    /* Initial selection screen */
+    .selection-screen {
+      background: white;
+      border: 1px solid var(--cell-border);
+      border-radius: 12px;
+      padding: 48px 32px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .selection-title {
       font-size: 22px;
+      font-weight: 700;
       color: #111827;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
-    .subtitle {
-      color: #6b7280;
+    .selection-subtitle {
       font-size: 14px;
-      margin-bottom: 20px;
+      color: #6b7280;
+      margin-bottom: 32px;
     }
 
-    /* Tab navigation */
-    .tab-nav {
+    .option-buttons {
       display: flex;
-      gap: 8px;
-      margin-bottom: 20px;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
     }
 
-    .tab-btn {
-      flex: 1;
-      padding: 12px 16px;
+    .option-btn {
       background: white;
       border: 2px solid var(--cell-border);
-      border-radius: 8px;
+      border-radius: 12px;
+      padding: 24px 32px;
       cursor: pointer;
       font-family: inherit;
-      font-size: 13px;
-      font-weight: 500;
-      color: #374151;
       transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
+      min-width: 180px;
     }
 
-    .tab-btn:hover {
-      border-color: #9ca3af;
-    }
-
-    .tab-btn.active {
+    .option-btn:hover {
       border-color: #3b82f6;
       background: #eff6ff;
-      color: #1e40af;
-      font-weight: 600;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
     }
 
-    .tab-btn .icon {
-      font-size: 18px;
+    .option-btn .icon {
+      font-size: 36px;
+      margin-bottom: 8px;
+    }
+
+    .option-btn .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .option-btn .type {
+      font-size: 11px;
+      color: #6b7280;
+      margin-top: 4px;
     }
 
     /* One-pager card */
@@ -104,6 +117,11 @@
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      display: none;
+    }
+
+    .one-pager.show {
+      display: block;
     }
 
     .pager-header {
@@ -178,6 +196,23 @@
       font-size: 10px;
       color: #6b7280;
       margin-top: 4px;
+    }
+
+    /* Rate selector in metric cell */
+    .rate-select {
+      font-size: 18px;
+      font-weight: 700;
+      font-family: inherit;
+      color: #111827;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      padding: 4px 8px;
+      background: #fefce8;
+      cursor: pointer;
+    }
+
+    .rate-select:hover {
+      border-color: #3b82f6;
     }
 
     /* Cash flow table */
@@ -262,6 +297,37 @@
       vertical-align: middle;
     }
 
+    /* Project switcher at bottom */
+    .project-switcher {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 20px;
+      border-top: 1px solid var(--cell-border);
+      background: #f9fafb;
+    }
+
+    .switcher-label {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .switcher-select {
+      font-size: 13px;
+      font-family: inherit;
+      padding: 6px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      background: white;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .switcher-select:hover {
+      border-color: #3b82f6;
+    }
+
     /* Modal */
     .modal-overlay {
       display: none;
@@ -341,36 +407,52 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .tab-nav {
+      .option-buttons {
         flex-direction: column;
+        align-items: center;
+      }
+
+      .option-btn {
+        width: 100%;
+        max-width: 280px;
       }
     }
 
     @media print {
       body { background: white; padding: 0; }
-      .back-link, .tab-nav { display: none; }
-      .one-pager { box-shadow: none; border: none; }
+      .back-link, .project-switcher, .selection-screen { display: none; }
+      .one-pager { box-shadow: none; border: none; display: block !important; }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <a href="index.html" class="back-link">← Back to Showcase</a>
-    <h1>Executive Summary</h1>
-    <p class="subtitle">One-page financial overview for each project</p>
 
-    <div class="tab-nav">
-      <button class="tab-btn active" onclick="showProject('nomadic')">
-        <span class="icon">🚐</span> Nomadic Nation
-      </button>
-      <button class="tab-btn" onclick="showProject('shadow')">
-        <span class="icon">🎬</span> Shadow Protocol
-      </button>
-      <button class="tab-btn" onclick="showProject('silk')">
-        <span class="icon">👗</span> Silk and Mahogany
-      </button>
+    <!-- Initial Selection Screen -->
+    <div class="selection-screen" id="selection-screen">
+      <div class="selection-title">Which option are you pitching?</div>
+      <div class="selection-subtitle">Select a project to view its executive summary</div>
+      <div class="option-buttons">
+        <button class="option-btn" onclick="selectProject('nomadic')">
+          <div class="icon">🚐</div>
+          <div class="name">Nomadic Nation</div>
+          <div class="type">Reality Series</div>
+        </button>
+        <button class="option-btn" onclick="selectProject('shadow')">
+          <div class="icon">🎬</div>
+          <div class="name">Shadow Protocol</div>
+          <div class="type">Action Film</div>
+        </button>
+        <button class="option-btn" onclick="selectProject('silk')">
+          <div class="icon">👗</div>
+          <div class="name">Silk and Mahogany</div>
+          <div class="type">Period Drama</div>
+        </button>
+      </div>
     </div>
 
+    <!-- One-Pager (hidden initially) -->
     <div class="one-pager" id="one-pager">
       <!-- Rendered by JS -->
     </div>
@@ -400,8 +482,7 @@
         totalCF: 11.5,
         ratio: 1.44,
         breakeven: 'Year 1-2',
-        rate: 15,
-        rateLabel: 'Low-Budget Genre',
+        defaultRate: 15,
         exitBreakdown: { 'Format Licensing': 0.8, 'Library Value': 0.5, 'Merchandise': 0.2 }
       },
       shadow: {
@@ -415,8 +496,7 @@
         totalCF: 115,
         ratio: 2.30,
         breakeven: 'Year 3-4',
-        rate: 23,
-        rateLabel: 'High-Concept',
+        defaultRate: 23,
         exitBreakdown: { 'Sequel Rights': 15, 'Franchise Potential': 8, 'Library Value': 5 }
       },
       silk: {
@@ -430,25 +510,45 @@
         totalCF: 52,
         ratio: 2.08,
         breakeven: 'Year 1-2',
-        rate: 18,
-        rateLabel: 'Mid-Budget Original',
+        defaultRate: 18,
         exitBreakdown: { 'International Rights': 4, 'Awards Catalog Value': 2.5, 'Soundtrack/Music': 1.5 }
       }
     };
 
-    let currentProject = 'nomadic';
+    const RATE_LABELS = {
+      12: 'Franchise/Proven IP',
+      15: 'Low-Budget Genre',
+      18: 'Mid-Budget Original',
+      23: 'High-Concept'
+    };
 
-    function showProject(key) {
+    let currentProject = null;
+    let selectedRates = {
+      nomadic: 15,
+      shadow: 23,
+      silk: 18
+    };
+
+    function selectProject(key) {
       currentProject = key;
-      document.querySelectorAll('.tab-btn').forEach((btn, i) => {
-        const keys = ['nomadic', 'shadow', 'silk'];
-        btn.classList.toggle('active', keys[i] === key);
-      });
+      document.getElementById('selection-screen').style.display = 'none';
+      document.getElementById('one-pager').classList.add('show');
+      render();
+    }
+
+    function switchProject(key) {
+      currentProject = key;
+      render();
+    }
+
+    function changeRate(rate) {
+      selectedRates[currentProject] = parseInt(rate);
       render();
     }
 
     function render() {
       const p = PROJECTS[currentProject];
+      const rate = selectedRates[currentProject];
       const cfWithExit = p.cashFlows.map((cf, i) => i === 4 ? cf + p.exitValue : cf);
 
       // Cumulative
@@ -458,7 +558,7 @@
       cfWithExit.forEach(cf => { running += cf; cumulative.push(running); });
 
       // NPV & IRR
-      const npv = calculateNPV(p, p.rate);
+      const npv = calculateNPV(p, rate);
       const irr = calculateIRR(p);
 
       document.getElementById('one-pager').innerHTML = `
@@ -490,8 +590,13 @@
           </div>
           <div class="metric-cell">
             <div class="metric-label">Discount Rate</div>
-            <div class="metric-value">${p.rate}%</div>
-            <div class="metric-note">${p.rateLabel}</div>
+            <select class="rate-select" onchange="changeRate(this.value)">
+              <option value="12" ${rate === 12 ? 'selected' : ''}>12%</option>
+              <option value="15" ${rate === 15 ? 'selected' : ''}>15%</option>
+              <option value="18" ${rate === 18 ? 'selected' : ''}>18%</option>
+              <option value="23" ${rate === 23 ? 'selected' : ''}>23%</option>
+            </select>
+            <div class="metric-note">${RATE_LABELS[rate]}</div>
           </div>
           <div class="metric-cell">
             <div class="metric-label">NPV</div>
@@ -550,6 +655,15 @@
             </tbody>
           </table>
         </div>
+
+        <div class="project-switcher">
+          <span class="switcher-label">Want to see a different option?</span>
+          <select class="switcher-select" onchange="switchProject(this.value)">
+            <option value="nomadic" ${currentProject === 'nomadic' ? 'selected' : ''}>🚐 Nomadic Nation</option>
+            <option value="shadow" ${currentProject === 'shadow' ? 'selected' : ''}>🎬 Shadow Protocol</option>
+            <option value="silk" ${currentProject === 'silk' ? 'selected' : ''}>👗 Silk and Mahogany</option>
+          </select>
+        </div>
       `;
     }
 
@@ -606,9 +720,6 @@
     }
 
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-    // Initialize
-    render();
   </script>
 </body>
 </html>
