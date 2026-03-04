@@ -41,7 +41,7 @@
     }
 
     .container {
-      max-width: 900px;
+      max-width: 850px;
       margin: 0 auto;
     }
 
@@ -60,120 +60,88 @@
     /* Tab navigation */
     .tab-nav {
       display: flex;
-      gap: 4px;
+      gap: 8px;
       margin-bottom: 20px;
-      border-bottom: 2px solid var(--cell-border);
-      padding-bottom: 0;
     }
 
     .tab-btn {
-      padding: 10px 20px;
+      flex: 1;
+      padding: 12px 16px;
       background: white;
-      border: 1px solid var(--cell-border);
-      border-bottom: none;
-      border-radius: 8px 8px 0 0;
+      border: 2px solid var(--cell-border);
+      border-radius: 8px;
       cursor: pointer;
       font-family: inherit;
       font-size: 13px;
       font-weight: 500;
-      color: #6b7280;
-      margin-bottom: -2px;
+      color: #374151;
       transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
     .tab-btn:hover {
-      background: #f9fafb;
-      color: #374151;
+      border-color: #9ca3af;
     }
 
     .tab-btn.active {
-      background: white;
+      border-color: #3b82f6;
+      background: #eff6ff;
       color: #1e40af;
-      border-color: var(--cell-border);
-      border-bottom: 2px solid white;
       font-weight: 600;
     }
 
-    .progress-count {
-      font-size: 11px;
-      color: #9ca3af;
-      margin-left: 4px;
+    .tab-btn .icon {
+      font-size: 18px;
     }
 
-    .progress-count.complete {
-      color: #059669;
-      font-weight: 600;
-    }
-
-    /* Tab content */
-    .tab-content {
-      display: none;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    /* Project cards */
-    .project-card {
+    /* One-pager card */
+    .one-pager {
       background: white;
       border: 1px solid var(--cell-border);
-      border-radius: 8px;
-      margin-bottom: 16px;
+      border-radius: 12px;
       overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
 
-    .project-header {
+    .pager-header {
+      background: linear-gradient(135deg, #1e3a8a, #1e40af);
+      color: white;
+      padding: 24px;
+    }
+
+    .pager-title-row {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 14px 16px;
-      background: linear-gradient(135deg, #1e3a8a, #1e40af);
-      color: white;
+      margin-bottom: 8px;
     }
 
-    .project-icon {
+    .pager-icon {
+      font-size: 32px;
+    }
+
+    .pager-name {
       font-size: 24px;
+      font-weight: 700;
     }
 
-    .project-info {
-      flex: 1;
+    .pager-type {
+      font-size: 14px;
+      opacity: 0.85;
+      margin-bottom: 12px;
     }
 
-    .project-name {
-      font-weight: 600;
-      font-size: 16px;
+    .pager-description {
+      font-size: 14px;
+      line-height: 1.6;
+      opacity: 0.9;
     }
 
-    .project-type {
-      font-size: 12px;
-      opacity: 0.8;
-    }
-
-    .project-status {
-      font-size: 11px;
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-weight: 600;
-      background: rgba(255,255,255,0.2);
-    }
-
-    .project-status.complete {
-      background: #059669;
-    }
-
-    /* Description */
-    .project-description {
-      padding: 12px 16px;
-      font-size: 13px;
-      color: #4b5563;
-      line-height: 1.5;
-      background: #f9fafb;
-      border-bottom: 1px solid var(--cell-border);
-    }
-
-    /* Metrics row */
-    .metrics-row {
+    /* Metrics grid */
+    .metrics-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 1px;
@@ -183,7 +151,7 @@
 
     .metric-cell {
       background: white;
-      padding: 12px;
+      padding: 16px;
       text-align: center;
     }
 
@@ -193,11 +161,11 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
       color: #6b7280;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     .metric-value {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 700;
       color: #111827;
     }
@@ -206,79 +174,36 @@
       color: #059669;
     }
 
-    /* Input section */
-    .input-section {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 14px 16px;
-      background: #fefce8;
-      border-bottom: 1px solid #fde68a;
-    }
-
-    .input-label {
-      font-size: 13px;
-      font-weight: 600;
-      color: #92400e;
-    }
-
-    .rate-select {
-      padding: 8px 12px;
-      font-size: 13px;
-      font-weight: 600;
-      font-family: inherit;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      background: white;
-      cursor: pointer;
-      min-width: 220px;
-    }
-
-    .result-box {
-      padding: 8px 14px;
-      background: white;
-      border-radius: 6px;
-      border: 1px solid #d1d5db;
-    }
-
-    .result-label {
+    .metric-note {
       font-size: 10px;
-      font-weight: 600;
-      text-transform: uppercase;
       color: #6b7280;
+      margin-top: 4px;
     }
 
-    .result-value {
-      font-size: 15px;
-      font-weight: 700;
-      color: #059669;
-    }
-
-    /* Tables */
+    /* Cash flow table */
     .table-section {
-      padding: 16px;
+      padding: 20px;
     }
 
-    .table-label {
+    .section-label {
       font-size: 11px;
       font-weight: 600;
-      color: #6b7280;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin-bottom: 8px;
+      color: #6b7280;
+      margin-bottom: 10px;
     }
 
     .sheet-table {
       width: 100%;
       border-collapse: collapse;
       font-size: 12px;
-      margin-bottom: 16px;
     }
 
     .sheet-table th,
     .sheet-table td {
       border: 1px solid var(--cell-border);
-      padding: 8px 10px;
+      padding: 10px 12px;
       text-align: right;
     }
 
@@ -295,7 +220,7 @@
       background: var(--cell-header-bg);
       font-weight: 500;
       color: #374151;
-      width: 140px;
+      width: 130px;
     }
 
     .cell-negative { color: #dc2626; }
@@ -309,16 +234,10 @@
 
     .cumulative-row td {
       background: #f9fafb;
-      font-style: italic;
       font-size: 11px;
     }
 
-    .discount-row td {
-      background: #dbeafe !important;
-      font-size: 11px;
-    }
-
-    /* Info badge for exit value */
+    /* Clickable exit value */
     .clickable-cell {
       cursor: pointer;
       position: relative;
@@ -339,7 +258,6 @@
       border-radius: 50%;
       font-size: 9px;
       font-weight: 700;
-      font-style: normal;
       margin-left: 4px;
       vertical-align: middle;
     }
@@ -365,9 +283,9 @@
     .modal-content {
       background: white;
       border-radius: 12px;
-      max-width: 400px;
+      max-width: 380px;
       width: 90%;
-      padding: 24px;
+      padding: 20px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.2);
     }
 
@@ -375,11 +293,11 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
 
     .modal-title {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       color: #111827;
     }
@@ -390,26 +308,25 @@
       font-size: 20px;
       cursor: pointer;
       color: #6b7280;
-      padding: 4px;
     }
 
     .modal-body {
-      font-size: 14px;
+      font-size: 13px;
       color: #4b5563;
-      line-height: 1.6;
+      line-height: 1.5;
     }
 
     .exit-breakdown {
       background: #f9fafb;
       border-radius: 8px;
-      padding: 12px;
-      margin-top: 12px;
+      padding: 10px;
+      margin-top: 10px;
     }
 
     .exit-row {
       display: flex;
       justify-content: space-between;
-      padding: 6px 0;
+      padding: 5px 0;
       border-bottom: 1px solid #e5e7eb;
     }
 
@@ -419,88 +336,20 @@
       color: #059669;
     }
 
-    /* Compare table */
-    .compare-intro {
-      background: white;
-      border: 1px solid var(--cell-border);
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 16px;
-    }
-
-    .compare-intro p {
-      font-size: 13px;
-      color: #4b5563;
-      line-height: 1.5;
-    }
-
-    .compare-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12px;
-      background: white;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid var(--cell-border);
-    }
-
-    .compare-table th,
-    .compare-table td {
-      border: 1px solid var(--cell-border);
-      padding: 12px;
-      text-align: center;
-    }
-
-    .compare-table th {
-      background: var(--cell-header-bg);
-      font-weight: 600;
-      color: #374151;
-    }
-
-    .compare-table .project-col {
-      text-align: left;
-      font-weight: 600;
-    }
-
-    .compare-table .highlight-best {
-      background: #fef9c3;
-    }
-
-    .rate-select-small {
-      padding: 4px 8px;
-      font-size: 11px;
-      font-weight: 600;
-      font-family: inherit;
-      border: 1px solid #d1d5db;
-      border-radius: 4px;
-      background: white;
-      cursor: pointer;
-    }
-
-    @media (max-width: 700px) {
-      .metrics-row {
+    @media (max-width: 600px) {
+      .metrics-grid {
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .input-section {
-        flex-wrap: wrap;
+      .tab-nav {
+        flex-direction: column;
       }
     }
 
     @media print {
-      body {
-        background: white;
-        padding: 0;
-      }
-
-      .back-link, .tab-nav {
-        display: none;
-      }
-
-      .project-card {
-        break-inside: avoid;
-        box-shadow: none;
-      }
+      body { background: white; padding: 0; }
+      .back-link, .tab-nav { display: none; }
+      .one-pager { box-shadow: none; border: none; }
     }
   </style>
 </head>
@@ -508,191 +357,31 @@
   <div class="container">
     <a href="index.html" class="back-link">← Back to Showcase</a>
     <h1>Executive Summary</h1>
-    <p class="subtitle">Review each project's financial analysis and compare all options</p>
+    <p class="subtitle">One-page financial overview for each project</p>
 
     <div class="tab-nav">
-      <button class="tab-btn active" onclick="showTab('projects')">All Projects</button>
-      <button class="tab-btn" onclick="showTab('compare')">Compare All <span class="progress-count" id="progress-count">(0 of 3)</span></button>
+      <button class="tab-btn active" onclick="showProject('nomadic')">
+        <span class="icon">🚐</span> Nomadic Nation
+      </button>
+      <button class="tab-btn" onclick="showProject('shadow')">
+        <span class="icon">🎬</span> Shadow Protocol
+      </button>
+      <button class="tab-btn" onclick="showProject('silk')">
+        <span class="icon">👗</span> Silk and Mahogany
+      </button>
     </div>
 
-    <div class="tab-content active" id="tab-projects">
-      <!-- Nomadic Nation -->
-      <div class="project-card" id="card-nomadic">
-        <div class="project-header">
-          <span class="project-icon">🚐</span>
-          <div class="project-info">
-            <div class="project-name">Nomadic Nation</div>
-            <div class="project-type">24-Episode Reality Series</div>
-          </div>
-          <span class="project-status" id="status-nomadic">Pending</span>
-        </div>
-        <div class="project-description">
-          A docuseries following digital nomads building businesses while traveling the world. Low production costs with proven reality TV format.
-        </div>
-        <div class="metrics-row">
-          <div class="metric-cell">
-            <div class="metric-label">Investment</div>
-            <div class="metric-value">$8M</div>
-          </div>
-          <div class="metric-cell">
-            <div class="metric-label">Cash Produced</div>
-            <div class="metric-value positive">$11.5M</div>
-          </div>
-          <div class="metric-cell">
-            <div class="metric-label">Ratio</div>
-            <div class="metric-value">1.44x</div>
-          </div>
-          <div class="metric-cell">
-            <div class="metric-label">Breakeven</div>
-            <div class="metric-value">Year 1-2</div>
-          </div>
-        </div>
-        <div class="input-section">
-          <span class="input-label">Discount Rate:</span>
-          <select class="rate-select" id="rate-nomadic" onchange="selectRate('nomadic', this.value)">
-            <option value="">Select rate...</option>
-            <option value="12">12% - Franchise/Proven IP</option>
-            <option value="15">15% - Low-Budget Genre</option>
-            <option value="18">18% - Mid-Budget Original</option>
-            <option value="23">23% - High-Concept/Experimental</option>
-          </select>
-          <div class="result-box" id="npv-nomadic" style="display:none;">
-            <div class="result-label">NPV</div>
-            <div class="result-value">—</div>
-          </div>
-          <div class="result-box" id="irr-nomadic" style="display:none;">
-            <div class="result-label">IRR</div>
-            <div class="result-value">—</div>
-          </div>
-        </div>
-        <div class="table-section" id="table-section-nomadic" style="display:none;">
-          <table class="sheet-table" id="table-nomadic"></table>
-        </div>
-      </div>
-
-      <!-- Shadow Protocol -->
-      <div class="project-card" id="card-shadow">
-        <div class="project-header">
-          <span class="project-icon">🎬</span>
-          <div class="project-info">
-            <div class="project-name">The Shadow Protocol</div>
-            <div class="project-type">Action Feature Film</div>
-          </div>
-          <span class="project-status" id="status-shadow">Pending</span>
-        </div>
-        <div class="project-description">
-          A high-concept espionage thriller with A-list talent attached. Large budget with significant box office and streaming potential.
-        </div>
-        <div class="metrics-row">
-          <div class="metric-cell">
-            <div class="metric-label">Investment</div>
-            <div class="metric-value">$50M</div>
-          </div>
-          <div class="metric-cell">
-            <div class="metric-label">Cash Produced</div>
-            <div class="metric-value positive">$115M</div>
-          </div>
-          <div class="metric-cell">
-            <div class="metric-label">Ratio</div>
-            <div class="metric-value">2.30x</div>
-          </div>
-          <div class="metric-cell">
-            <div class="metric-label">Breakeven</div>
-            <div class="metric-value">Year 3-4</div>
-          </div>
-        </div>
-        <div class="input-section">
-          <span class="input-label">Discount Rate:</span>
-          <select class="rate-select" id="rate-shadow" onchange="selectRate('shadow', this.value)">
-            <option value="">Select rate...</option>
-            <option value="12">12% - Franchise/Proven IP</option>
-            <option value="15">15% - Low-Budget Genre</option>
-            <option value="18">18% - Mid-Budget Original</option>
-            <option value="23">23% - High-Concept/Experimental</option>
-          </select>
-          <div class="result-box" id="npv-shadow" style="display:none;">
-            <div class="result-label">NPV</div>
-            <div class="result-value">—</div>
-          </div>
-          <div class="result-box" id="irr-shadow" style="display:none;">
-            <div class="result-label">IRR</div>
-            <div class="result-value">—</div>
-          </div>
-        </div>
-        <div class="table-section" id="table-section-shadow" style="display:none;">
-          <table class="sheet-table" id="table-shadow"></table>
-        </div>
-      </div>
-
-      <!-- Silk and Mahogany -->
-      <div class="project-card" id="card-silk">
-        <div class="project-header">
-          <span class="project-icon">👗</span>
-          <div class="project-info">
-            <div class="project-name">Silk and Mahogany</div>
-            <div class="project-type">8-Episode Period Drama</div>
-          </div>
-          <span class="project-status" id="status-silk">Pending</span>
-        </div>
-        <div class="project-description">
-          A prestige limited series set in 1920s Harlem, exploring the intersection of fashion, music, and the Harlem Renaissance.
-        </div>
-        <div class="metrics-row">
-          <div class="metric-cell">
-            <div class="metric-label">Investment</div>
-            <div class="metric-value">$25M</div>
-          </div>
-          <div class="metric-cell">
-            <div class="metric-label">Cash Produced</div>
-            <div class="metric-value positive">$52M</div>
-          </div>
-          <div class="metric-cell">
-            <div class="metric-label">Ratio</div>
-            <div class="metric-value">2.08x</div>
-          </div>
-          <div class="metric-cell">
-            <div class="metric-label">Breakeven</div>
-            <div class="metric-value">Year 1-2</div>
-          </div>
-        </div>
-        <div class="input-section">
-          <span class="input-label">Discount Rate:</span>
-          <select class="rate-select" id="rate-silk" onchange="selectRate('silk', this.value)">
-            <option value="">Select rate...</option>
-            <option value="12">12% - Franchise/Proven IP</option>
-            <option value="15">15% - Low-Budget Genre</option>
-            <option value="18">18% - Mid-Budget Original</option>
-            <option value="23">23% - High-Concept/Experimental</option>
-          </select>
-          <div class="result-box" id="npv-silk" style="display:none;">
-            <div class="result-label">NPV</div>
-            <div class="result-value">—</div>
-          </div>
-          <div class="result-box" id="irr-silk" style="display:none;">
-            <div class="result-label">IRR</div>
-            <div class="result-value">—</div>
-          </div>
-        </div>
-        <div class="table-section" id="table-section-silk" style="display:none;">
-          <table class="sheet-table" id="table-silk"></table>
-        </div>
-      </div>
-    </div>
-
-    <div class="tab-content" id="tab-compare">
-      <div class="compare-intro">
-        <p>Compare all three projects side-by-side. Adjust each project's discount rate to see how NPV and IRR change. Best values in each column are highlighted.</p>
-      </div>
-      <table class="compare-table" id="compare-table"></table>
+    <div class="one-pager" id="one-pager">
+      <!-- Rendered by JS -->
     </div>
   </div>
 
   <!-- Exit Value Modal -->
-  <div class="modal-overlay" id="exit-modal" onclick="closeExitModal(event)">
+  <div class="modal-overlay" id="exit-modal" onclick="closeModal(event)">
     <div class="modal-content" onclick="event.stopPropagation()">
       <div class="modal-header">
-        <span class="modal-title" id="modal-title">Exit Value Breakdown</span>
-        <button class="modal-close" onclick="closeExitModal()">&times;</button>
+        <span class="modal-title" id="modal-title">Exit Value</span>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
       </div>
       <div class="modal-body" id="modal-body"></div>
     </div>
@@ -704,171 +393,169 @@
         name: 'Nomadic Nation',
         icon: '🚐',
         type: '24-Episode Reality Series',
+        description: 'A docuseries following digital nomads building businesses while traveling the world. Low production costs with proven reality TV format. Revenue primarily from streaming rights and advertising.',
         investment: 8,
         cashFlows: [7, 2.5, 0.5, 0, 0],
         exitValue: 1.5,
         totalCF: 11.5,
-        exitBreakdown: {
-          'Format Licensing': 0.8,
-          'Library Value': 0.5,
-          'Merchandise': 0.2
-        }
+        ratio: 1.44,
+        breakeven: 'Year 1-2',
+        rate: 15,
+        rateLabel: 'Low-Budget Genre',
+        exitBreakdown: { 'Format Licensing': 0.8, 'Library Value': 0.5, 'Merchandise': 0.2 }
       },
       shadow: {
         name: 'The Shadow Protocol',
         icon: '🎬',
         type: 'Action Feature Film',
+        description: 'A high-concept espionage thriller with A-list talent attached. Large budget with significant box office and streaming potential. High risk due to production complexity, but strong franchise potential.',
         investment: 50,
         cashFlows: [5, 14, 27, 24, 17],
         exitValue: 28,
         totalCF: 115,
-        exitBreakdown: {
-          'Sequel Rights': 15,
-          'Franchise Potential': 8,
-          'Library Value': 5
-        }
+        ratio: 2.30,
+        breakeven: 'Year 3-4',
+        rate: 23,
+        rateLabel: 'High-Concept',
+        exitBreakdown: { 'Sequel Rights': 15, 'Franchise Potential': 8, 'Library Value': 5 }
       },
       silk: {
         name: 'Silk and Mahogany',
         icon: '👗',
         type: '8-Episode Period Drama',
+        description: 'A prestige limited series set in 1920s Harlem, exploring fashion, music, and the Harlem Renaissance. Awards potential with strong international distribution appeal and catalog value.',
         investment: 25,
         cashFlows: [15, 12, 8.5, 5, 3.5],
         exitValue: 8,
         totalCF: 52,
-        exitBreakdown: {
-          'International Rights': 4,
-          'Awards Catalog Value': 2.5,
-          'Soundtrack/Music': 1.5
-        }
+        ratio: 2.08,
+        breakeven: 'Year 1-2',
+        rate: 18,
+        rateLabel: 'Mid-Budget Original',
+        exitBreakdown: { 'International Rights': 4, 'Awards Catalog Value': 2.5, 'Soundtrack/Music': 1.5 }
       }
     };
 
-    let selectedRates = { nomadic: null, shadow: null, silk: null };
-    let completedProjects = { nomadic: false, shadow: false, silk: false };
+    let currentProject = 'nomadic';
 
-    function showTab(tab) {
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-
-      if (tab === 'projects') {
-        document.querySelector('.tab-btn:first-child').classList.add('active');
-        document.getElementById('tab-projects').classList.add('active');
-      } else {
-        document.querySelector('.tab-btn:last-child').classList.add('active');
-        document.getElementById('tab-compare').classList.add('active');
-        renderCompareTable();
-      }
+    function showProject(key) {
+      currentProject = key;
+      document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+        const keys = ['nomadic', 'shadow', 'silk'];
+        btn.classList.toggle('active', keys[i] === key);
+      });
+      render();
     }
 
-    function selectRate(key, rate) {
-      if (!rate) return;
-
-      selectedRates[key] = parseInt(rate);
-      completedProjects[key] = true;
-
-      // Show results
-      const npv = calculateNPV(key, selectedRates[key]);
-      const irr = calculateIRR(key);
-
-      document.getElementById(`npv-${key}`).style.display = 'block';
-      document.getElementById(`npv-${key}`).querySelector('.result-value').textContent = `$${npv.toFixed(2)}M`;
-
-      document.getElementById(`irr-${key}`).style.display = 'block';
-      document.getElementById(`irr-${key}`).querySelector('.result-value').textContent = `${irr.toFixed(0)}%`;
-
-      // Show table section
-      document.getElementById(`table-section-${key}`).style.display = 'block';
-      renderTable(key);
-
-      // Update status
-      document.getElementById(`status-${key}`).textContent = 'Complete';
-      document.getElementById(`status-${key}`).classList.add('complete');
-
-      updateProgress();
-    }
-
-    function renderTable(key) {
-      const p = PROJECTS[key];
-      const rate = selectedRates[key];
+    function render() {
+      const p = PROJECTS[currentProject];
       const cfWithExit = p.cashFlows.map((cf, i) => i === 4 ? cf + p.exitValue : cf);
 
-      // Calculate cumulative
+      // Cumulative
       const cumulative = [];
       let running = -p.investment;
       cumulative.push(running);
-      cfWithExit.forEach(cf => {
-        running += cf;
-        cumulative.push(running);
-      });
+      cfWithExit.forEach(cf => { running += cf; cumulative.push(running); });
 
-      // Calculate discounted values
-      const discountFactors = [1, 2, 3, 4, 5].map(y => 1 / Math.pow(1 + rate / 100, y));
-      const pvValues = cfWithExit.map((cf, i) => cf * discountFactors[i]);
+      // NPV & IRR
+      const npv = calculateNPV(p, p.rate);
+      const irr = calculateIRR(p);
 
-      document.getElementById(`table-${key}`).innerHTML = `
-        <thead>
-          <tr>
-            <th class="row-header"></th>
-            <th>Year 0</th>
-            <th>Year 1</th>
-            <th>Year 2</th>
-            <th>Year 3</th>
-            <th>Year 4</th>
-            <th>Year 5</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="row-header">Investment</td>
-            <td class="cell-negative">($${p.investment}M)</td>
-            <td>—</td>
-            <td>—</td>
-            <td>—</td>
-            <td>—</td>
-            <td>—</td>
-            <td class="cell-negative">($${p.investment}M)</td>
-          </tr>
-          <tr>
-            <td class="row-header">Net Cash Flow</td>
-            <td>—</td>
-            ${p.cashFlows.slice(0, 4).map(cf => `<td class="${cf > 0 ? 'cell-positive' : 'cell-zero'}">${cf > 0 ? '$' + cf + 'M' : '$0'}</td>`).join('')}
-            <td class="cell-positive clickable-cell" onclick="showExitModal('${key}')">$${cfWithExit[4]}M <span class="info-badge">i</span></td>
-            <td class="cell-positive">$${p.totalCF}M</td>
-          </tr>
-          <tr class="total-row">
-            <td class="row-header">Total Cash Flow</td>
-            <td class="cell-negative">($${p.investment}M)</td>
-            ${cfWithExit.map(cf => `<td class="${cf > 0 ? 'cell-positive' : 'cell-zero'}">${cf > 0 ? '$' + cf + 'M' : '$0'}</td>`).join('')}
-            <td class="cell-positive">$${cumulative[cumulative.length - 1]}M</td>
-          </tr>
-          <tr class="cumulative-row">
-            <td class="row-header">Cumulative</td>
-            ${cumulative.map(c => `<td class="${c >= 0 ? 'cell-positive' : 'cell-negative'}">${c >= 0 ? '$' + c + 'M' : '($' + Math.abs(c) + 'M)'}</td>`).join('')}
-            <td>—</td>
-          </tr>
-          <tr class="discount-row">
-            <td class="row-header">Discount Factor (${rate}%)</td>
-            <td>1.000</td>
-            ${discountFactors.map(df => `<td>${df.toFixed(3)}</td>`).join('')}
-            <td>—</td>
-          </tr>
-          <tr class="discount-row">
-            <td class="row-header">Present Value</td>
-            <td class="cell-negative">($${p.investment.toFixed(2)}M)</td>
-            ${pvValues.map(pv => `<td class="cell-positive">$${pv.toFixed(2)}M</td>`).join('')}
-            <td class="cell-positive">$${(pvValues.reduce((a,b) => a + b, 0) - p.investment).toFixed(2)}M</td>
-          </tr>
-        </tbody>
+      document.getElementById('one-pager').innerHTML = `
+        <div class="pager-header">
+          <div class="pager-title-row">
+            <span class="pager-icon">${p.icon}</span>
+            <span class="pager-name">${p.name}</span>
+          </div>
+          <div class="pager-type">${p.type}</div>
+          <div class="pager-description">${p.description}</div>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-cell">
+            <div class="metric-label">Investment</div>
+            <div class="metric-value">$${p.investment}M</div>
+          </div>
+          <div class="metric-cell">
+            <div class="metric-label">Cash Produced</div>
+            <div class="metric-value positive">$${p.totalCF}M</div>
+          </div>
+          <div class="metric-cell">
+            <div class="metric-label">Ratio</div>
+            <div class="metric-value">${p.ratio.toFixed(2)}x</div>
+          </div>
+          <div class="metric-cell">
+            <div class="metric-label">Breakeven</div>
+            <div class="metric-value">${p.breakeven}</div>
+          </div>
+          <div class="metric-cell">
+            <div class="metric-label">Discount Rate</div>
+            <div class="metric-value">${p.rate}%</div>
+            <div class="metric-note">${p.rateLabel}</div>
+          </div>
+          <div class="metric-cell">
+            <div class="metric-label">NPV</div>
+            <div class="metric-value positive">$${npv.toFixed(1)}M</div>
+          </div>
+          <div class="metric-cell">
+            <div class="metric-label">IRR</div>
+            <div class="metric-value positive">${irr.toFixed(0)}%</div>
+          </div>
+          <div class="metric-cell">
+            <div class="metric-label">Exit Value</div>
+            <div class="metric-value">$${p.exitValue}M</div>
+          </div>
+        </div>
+
+        <div class="table-section">
+          <div class="section-label">Cash Flow Analysis</div>
+          <table class="sheet-table">
+            <thead>
+              <tr>
+                <th class="row-header"></th>
+                <th>Year 0</th>
+                <th>Year 1</th>
+                <th>Year 2</th>
+                <th>Year 3</th>
+                <th>Year 4</th>
+                <th>Year 5</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="row-header">Investment</td>
+                <td class="cell-negative">($${p.investment}M)</td>
+                <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
+                <td class="cell-negative">($${p.investment}M)</td>
+              </tr>
+              <tr>
+                <td class="row-header">Net Cash Flow</td>
+                <td>—</td>
+                ${p.cashFlows.slice(0, 4).map(cf => `<td class="${cf > 0 ? 'cell-positive' : 'cell-zero'}">${cf > 0 ? '$' + cf + 'M' : '$0'}</td>`).join('')}
+                <td class="cell-positive clickable-cell" onclick="showExitModal()">$${cfWithExit[4]}M <span class="info-badge">i</span></td>
+                <td class="cell-positive">$${p.totalCF}M</td>
+              </tr>
+              <tr class="total-row">
+                <td class="row-header">Total Cash Flow</td>
+                <td class="cell-negative">($${p.investment}M)</td>
+                ${cfWithExit.map(cf => `<td class="${cf > 0 ? 'cell-positive' : 'cell-zero'}">${cf > 0 ? '$' + cf + 'M' : '$0'}</td>`).join('')}
+                <td class="cell-positive">$${cumulative[cumulative.length - 1]}M</td>
+              </tr>
+              <tr class="cumulative-row">
+                <td class="row-header">Cumulative</td>
+                ${cumulative.map(c => `<td class="${c >= 0 ? 'cell-positive' : 'cell-negative'}">${c >= 0 ? '$' + c + 'M' : '($' + Math.abs(c) + 'M)'}</td>`).join('')}
+                <td>—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       `;
     }
 
-    function calculateNPV(key, rate) {
-      const p = PROJECTS[key];
+    function calculateNPV(p, rate) {
       const cfWithExit = [...p.cashFlows];
       cfWithExit[4] += p.exitValue;
-
       let npv = -p.investment;
       cfWithExit.forEach((cf, i) => {
         npv += cf / Math.pow(1 + rate / 100, i + 1);
@@ -876,15 +563,12 @@
       return npv;
     }
 
-    function calculateIRR(key) {
-      const p = PROJECTS[key];
+    function calculateIRR(p) {
       const cfWithExit = [...p.cashFlows];
       cfWithExit[4] += p.exitValue;
-
       let irr = 0.1;
       for (let iter = 0; iter < 100; iter++) {
-        let npv = -p.investment;
-        let dnpv = 0;
+        let npv = -p.investment, dnpv = 0;
         cfWithExit.forEach((cf, i) => {
           const t = i + 1;
           npv += cf / Math.pow(1 + irr, t);
@@ -898,8 +582,8 @@
       return irr * 100;
     }
 
-    function showExitModal(key) {
-      const p = PROJECTS[key];
+    function showExitModal() {
+      const p = PROJECTS[currentProject];
       document.getElementById('modal-title').textContent = `${p.icon} ${p.name} - Exit Value`;
 
       let breakdown = '';
@@ -909,126 +593,22 @@
       breakdown += `<div class="exit-row"><span>Total Exit Value</span><span>$${p.exitValue}M</span></div>`;
 
       document.getElementById('modal-body').innerHTML = `
-        <p>Year 5 includes additional value from:</p>
+        <p>Year 5 includes exit value from:</p>
         <div class="exit-breakdown">${breakdown}</div>
       `;
-
       document.getElementById('exit-modal').classList.add('show');
     }
 
-    function closeExitModal(event) {
+    function closeModal(event) {
       if (!event || event.target === document.getElementById('exit-modal')) {
         document.getElementById('exit-modal').classList.remove('show');
       }
     }
 
-    function updateProgress() {
-      const count = Object.values(completedProjects).filter(Boolean).length;
-      const el = document.getElementById('progress-count');
-      el.textContent = `(${count} of 3)`;
-      el.classList.toggle('complete', count === 3);
-    }
-
-    function renderCompareTable() {
-      const projects = ['nomadic', 'shadow', 'silk'];
-
-      // Find best values
-      const npvs = projects.map(k => selectedRates[k] ? calculateNPV(k, selectedRates[k]) : null);
-      const irrs = projects.map(k => selectedRates[k] ? calculateIRR(k) : null);
-      const ratios = [1.44, 2.30, 2.08];
-
-      const bestNPV = Math.max(...npvs.filter(n => n !== null));
-      const bestIRR = Math.max(...irrs.filter(n => n !== null));
-      const bestRatio = Math.max(...ratios);
-
-      let html = `
-        <thead>
-          <tr>
-            <th>Project</th>
-            <th>Investment</th>
-            <th>Cash Produced</th>
-            <th>Ratio</th>
-            <th>Breakeven</th>
-            <th>Rate</th>
-            <th>NPV</th>
-            <th>IRR</th>
-          </tr>
-        </thead>
-        <tbody>
-      `;
-
-      const data = [
-        { key: 'nomadic', name: '🚐 Nomadic Nation', inv: 8, cf: 11.5, ratio: 1.44, be: 'Year 1-2' },
-        { key: 'shadow', name: '🎬 Shadow Protocol', inv: 50, cf: 115, ratio: 2.30, be: 'Year 3-4' },
-        { key: 'silk', name: '👗 Silk and Mahogany', inv: 25, cf: 52, ratio: 2.08, be: 'Year 1-2' }
-      ];
-
-      data.forEach((row, i) => {
-        const rate = selectedRates[row.key];
-        const npv = rate ? calculateNPV(row.key, rate) : null;
-        const irr = rate ? calculateIRR(row.key) : null;
-
-        html += `
-          <tr>
-            <td class="project-col">${row.name}</td>
-            <td>$${row.inv}M</td>
-            <td class="cell-positive">$${row.cf}M</td>
-            <td class="${row.ratio === bestRatio ? 'highlight-best' : ''}">${row.ratio.toFixed(2)}x</td>
-            <td class="${row.be === 'Year 1-2' ? 'highlight-best' : ''}">${row.be}</td>
-            <td>
-              <select class="rate-select-small" onchange="updateCompareRate('${row.key}', this.value)">
-                <option value="">—</option>
-                <option value="12" ${rate === 12 ? 'selected' : ''}>12%</option>
-                <option value="15" ${rate === 15 ? 'selected' : ''}>15%</option>
-                <option value="18" ${rate === 18 ? 'selected' : ''}>18%</option>
-                <option value="23" ${rate === 23 ? 'selected' : ''}>23%</option>
-              </select>
-            </td>
-            <td class="${npv === bestNPV && npv !== null ? 'highlight-best cell-positive' : (npv !== null ? 'cell-positive' : '')}">${npv !== null ? '$' + npv.toFixed(2) + 'M' : '—'}</td>
-            <td class="${irr === bestIRR && irr !== null ? 'highlight-best cell-positive' : (irr !== null ? 'cell-positive' : '')}">${irr !== null ? irr.toFixed(0) + '%' : '—'}</td>
-          </tr>
-        `;
-      });
-
-      html += '</tbody>';
-      document.getElementById('compare-table').innerHTML = html;
-    }
-
-    function updateCompareRate(key, rate) {
-      if (!rate) return;
-
-      selectedRates[key] = parseInt(rate);
-      completedProjects[key] = true;
-
-      // Update the main project's select and status
-      document.getElementById(`rate-${key}`).value = rate;
-      document.getElementById(`status-${key}`).textContent = 'Complete';
-      document.getElementById(`status-${key}`).classList.add('complete');
-
-      // Show results on main card
-      const npv = calculateNPV(key, selectedRates[key]);
-      const irr = calculateIRR(key);
-
-      document.getElementById(`npv-${key}`).style.display = 'block';
-      document.getElementById(`npv-${key}`).querySelector('.result-value').textContent = `$${npv.toFixed(2)}M`;
-
-      document.getElementById(`irr-${key}`).style.display = 'block';
-      document.getElementById(`irr-${key}`).querySelector('.result-value').textContent = `${irr.toFixed(0)}%`;
-
-      document.getElementById(`table-section-${key}`).style.display = 'block';
-      renderTable(key);
-
-      updateProgress();
-      renderCompareTable();
-    }
-
-    // Handle escape key
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') closeExitModal();
-    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
     // Initialize
-    updateProgress();
+    render();
   </script>
 </body>
 </html>
