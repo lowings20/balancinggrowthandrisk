@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NPV & IRR Analysis | Spreadsheet Style</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cell-border: #d1d5db;
+      --cell-header-bg: #f3f4f6;
+      --correct-bg: #dcfce7;
+      --correct-border: #22c55e;
+      --input-bg: #fffbeb;
+      --input-border: #d1d5db;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Public Sans', -apple-system, sans-serif;
+      background: #f3f4f6;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #1e40af;
+      text-decoration: none;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 22px;
+      color: #111827;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      color: #6b7280;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 2px;
+      margin-bottom: 0;
+    }
+
+    .tab {
+      padding: 10px 20px;
+      background: #e5e7eb;
+      border: none;
+      border-radius: 6px 6px 0 0;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      color: #6b7280;
+      cursor: pointer;
+    }
+
+    .tab:hover {
+      background: #d1d5db;
+    }
+
+    .tab.active {
+      background: white;
+      color: #111827;
+    }
+
+    .tab-content {
+      display: none;
+      background: white;
+      border-radius: 0 6px 6px 6px;
+      padding: 20px;
+      border: 1px solid var(--cell-border);
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Rate legend */
+    .rate-legend {
+      background: #f8fafc;
+      border: 1px solid var(--cell-border);
+      border-radius: 6px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+    }
+
+    .legend-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #374151;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .legend-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .legend-item {
+      font-size: 12px;
+      color: #4b5563;
+    }
+
+    .legend-item strong {
+      color: #1e40af;
+    }
+
+    /* Project selector */
+    .project-selector {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .project-btn {
+      flex: 1;
+      padding: 12px;
+      background: white;
+      border: 2px solid var(--cell-border);
+      border-radius: 6px;
+      cursor: pointer;
+      text-align: center;
+      font-family: inherit;
+    }
+
+    .project-btn:hover {
+      border-color: #9ca3af;
+    }
+
+    .project-btn.active {
+      border-color: #3b82f6;
+      background: #eff6ff;
+    }
+
+    .project-btn .name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .project-btn .status {
+      font-size: 11px;
+      color: #22c55e;
+      margin-top: 4px;
+      display: none;
+    }
+
+    .project-btn.complete .status {
+      display: block;
+    }
+
+    /* Table */
+    .sheet-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-bottom: 20px;
+    }
+
+    .sheet-table th,
+    .sheet-table td {
+      border: 1px solid var(--cell-border);
+      padding: 8px 10px;
+      text-align: right;
+    }
+
+    .sheet-table th {
+      background: var(--cell-header-bg);
+      font-weight: 600;
+      color: #374151;
+      text-align: center;
+    }
+
+    .sheet-table .row-header {
+      text-align: left;
+      background: var(--cell-header-bg);
+      font-weight: 500;
+      color: #374151;
+      width: 180px;
+    }
+
+    .cell-negative { color: #dc2626; }
+    .cell-positive { color: #059669; }
+    .cell-zero { color: #9ca3af; }
+
+    .exit-row td {
+      background: #fefce8 !important;
+      font-style: italic;
+    }
+
+    .discount-row td {
+      background: #dbeafe !important;
+    }
+
+    /* Rate selection */
+    .rate-section {
+      background: #fafafa;
+      border: 1px solid var(--cell-border);
+      border-radius: 6px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .rate-section h3 {
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 12px;
+    }
+
+    .rate-options {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .rate-option {
+      flex: 1;
+      min-width: 140px;
+      padding: 12px;
+      background: white;
+      border: 2px solid var(--cell-border);
+      border-radius: 6px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .rate-option:hover {
+      border-color: #9ca3af;
+    }
+
+    .rate-option.selected {
+      border-color: #3b82f6;
+      background: #eff6ff;
+    }
+
+    .rate-option .rate-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1e40af;
+    }
+
+    .rate-option .rate-label {
+      font-size: 11px;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+
+    /* Results section */
+    .results-section {
+      background: #fafafa;
+      border: 1px solid var(--cell-border);
+      border-radius: 6px;
+      padding: 16px;
+      margin-bottom: 16px;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .results-section.unlocked {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .results-section h3 {
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 12px;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .result-box {
+      background: #1e40af;
+      border-radius: 6px;
+      padding: 16px;
+      text-align: center;
+      color: white;
+    }
+
+    .result-box .label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      opacity: 0.8;
+      margin-bottom: 4px;
+    }
+
+    .result-box .value {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    /* Compare tab */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .compare-table th,
+    .compare-table td {
+      border: 1px solid var(--cell-border);
+      padding: 12px;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .compare-table th {
+      background: var(--cell-header-bg);
+      font-weight: 600;
+    }
+
+    .compare-table th .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .info-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      background: #e5e7eb;
+      border-radius: 50%;
+      font-size: 10px;
+      font-weight: 700;
+      color: #6b7280;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .info-icon:hover {
+      background: #3b82f6;
+      color: white;
+    }
+
+    .info-icon .info-tooltip {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1f2937;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 400;
+      width: 200px;
+      white-space: normal;
+      text-align: left;
+      z-index: 100;
+    }
+
+    .info-icon .info-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: #1f2937;
+    }
+
+    .info-icon:hover .info-tooltip {
+      display: block;
+    }
+
+    .compare-table .project-col {
+      text-align: left;
+      font-weight: 600;
+    }
+
+    .project-name-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .analyze-btn {
+      font-size: 9px;
+      font-weight: 700;
+      padding: 3px 6px;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .analyze-btn:hover {
+      background: #2563eb;
+    }
+
+    .compare-table td.empty {
+      color: #9ca3af;
+      font-style: italic;
+      background: #fafafa;
+    }
+
+    .compare-table td.filled {
+      cursor: pointer;
+      position: relative;
+    }
+
+    .compare-table td.filled:hover {
+      background: #e5e7eb;
+    }
+
+    .cell-tooltip {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 4px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #374151;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      white-space: nowrap;
+      z-index: 100;
+    }
+
+    .compare-table td.filled:hover .cell-tooltip,
+    .compare-table td.winner:hover .cell-tooltip {
+      display: block;
+    }
+
+    .compare-table td.winner {
+      background: #fef3c7;
+      font-weight: 700;
+    }
+
+    .compare-table td.winner:hover {
+      background: #fde68a;
+    }
+
+    .compare-buttons-row td {
+      background: white !important;
+      border-top: none;
+      padding: 8px 12px;
+    }
+
+    .compare-btn {
+      font-size: 9px;
+      font-weight: 700;
+      padding: 4px 8px;
+      background: #6b7280;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .compare-btn:hover {
+      background: #4b5563;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal-box {
+      background: white;
+      padding: 20px 24px;
+      border-radius: 8px;
+      max-width: 400px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+
+    .modal-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 8px;
+    }
+
+    .modal-text {
+      font-size: 13px;
+      color: #374151;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    .modal-close {
+      font-size: 12px;
+      padding: 6px 14px;
+      background: #e5e7eb;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .modal-close:hover {
+      background: #d1d5db;
+    }
+
+    @media (max-width: 700px) {
+      .project-selector {
+        flex-direction: column;
+      }
+      .rate-options {
+        flex-direction: column;
+      }
+      .results-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="index.html" class="back-link">← Back to Showcase</a>
+    <h1>NPV & IRR Analysis</h1>
+    <p class="subtitle">Select a discount rate for each project based on its risk profile</p>
+
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('exercise')">Exercise</button>
+      <button class="tab" id="compare-tab" onclick="switchTab('compare')">Compare All</button>
+    </div>
+
+    <div class="tab-content active" id="exercise-tab">
+      <div class="rate-legend">
+        <div class="legend-title">Discount Rate Categories</div>
+        <div class="legend-items">
+          <span class="legend-item"><strong>12%</strong> Franchise/Proven IP</span>
+          <span class="legend-item"><strong>15%</strong> Low-Budget Genre</span>
+          <span class="legend-item"><strong>18%</strong> Mid-Budget Original</span>
+          <span class="legend-item"><strong>23%</strong> High-Concept/Experimental</span>
+        </div>
+      </div>
+
+      <div class="project-selector">
+        <button class="project-btn active" data-project="nomadic" onclick="selectProject('nomadic')">
+          <div class="name">🚐 Nomadic Nation</div>
+          <div class="status">✓ Complete</div>
+        </button>
+        <button class="project-btn" data-project="shadow" onclick="selectProject('shadow')">
+          <div class="name">🎬 The Shadow Protocol</div>
+          <div class="status">✓ Complete</div>
+        </button>
+        <button class="project-btn" data-project="silk" onclick="selectProject('silk')">
+          <div class="name">👗 Silk and Mahogany</div>
+          <div class="status">✓ Complete</div>
+        </button>
+      </div>
+
+      <table class="sheet-table" id="cf-table"></table>
+
+      <div class="rate-section">
+        <h3>Select Discount Rate</h3>
+        <div class="rate-options" id="rate-options">
+          <div class="rate-option" data-rate="12" onclick="selectRate(12)">
+            <div class="rate-value">12%</div>
+            <div class="rate-label">Franchise/Proven IP</div>
+          </div>
+          <div class="rate-option" data-rate="15" onclick="selectRate(15)">
+            <div class="rate-value">15%</div>
+            <div class="rate-label">Low-Budget Genre</div>
+          </div>
+          <div class="rate-option" data-rate="18" onclick="selectRate(18)">
+            <div class="rate-value">18%</div>
+            <div class="rate-label">Mid-Budget Original</div>
+          </div>
+          <div class="rate-option" data-rate="23" onclick="selectRate(23)">
+            <div class="rate-value">23%</div>
+            <div class="rate-label">High-Concept/Experimental</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="results-section" id="results-section">
+        <h3>Calculated Results</h3>
+        <table class="sheet-table" id="pv-table"></table>
+        <div class="results-grid">
+          <div class="result-box">
+            <div class="label">Net Present Value (NPV)</div>
+            <div class="value" id="npv-result">—</div>
+          </div>
+          <div class="result-box">
+            <div class="label">Internal Rate of Return (IRR)</div>
+            <div class="value" id="irr-result">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="compare-tab-content">
+      <table class="compare-table" id="compare-table">
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th>
+              <div class="header-content">
+                Investment (Cash Used)
+                <span class="info-icon">i<span class="info-tooltip">The upfront capital required to produce the project.</span></span>
+              </div>
+            </th>
+            <th>
+              <div class="header-content">
+                Cash Produced
+                <span class="info-icon">i<span class="info-tooltip">Total cash generated over the project's lifetime including exit value.</span></span>
+              </div>
+            </th>
+            <th>
+              <div class="header-content">
+                Cash Produced / Cash Invested
+                <span class="info-icon">i<span class="info-tooltip">Return multiple: how many dollars returned for each dollar invested.</span></span>
+              </div>
+            </th>
+            <th>
+              <div class="header-content">
+                Breakeven (Estimated)
+                <span class="info-icon">i<span class="info-tooltip">The period when cumulative cash flows turn positive.</span></span>
+              </div>
+            </th>
+            <th>
+              <div class="header-content">
+                Discount Rate
+                <span class="info-icon">i<span class="info-tooltip">The rate used to discount future cash flows to present value, based on project risk.</span></span>
+              </div>
+            </th>
+            <th>
+              <div class="header-content">
+                NPV
+                <span class="info-icon">i<span class="info-tooltip">Net Present Value: the sum of all discounted cash flows. Higher is better.</span></span>
+              </div>
+            </th>
+            <th>
+              <div class="header-content">
+                IRR
+                <span class="info-icon">i<span class="info-tooltip">Internal Rate of Return: the discount rate at which NPV equals zero. Higher means better return.</span></span>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody id="compare-body"></tbody>
+      </table>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modal-overlay" onclick="closeModal()">
+      <div class="modal-box" onclick="event.stopPropagation()">
+        <div class="modal-title" id="modal-title"></div>
+        <div class="modal-text" id="modal-text"></div>
+        <button class="modal-close" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const PROJECTS = {
+      nomadic: {
+        name: 'Nomadic Nation',
+        icon: '🚐',
+        type: '24-Episode Reality Series',
+        investment: 8,
+        cashFlows: [7, 2.5, 0.5, 0, 0],
+        exitValue: 1.5,
+        totalCF: 11.5,
+        ratio: 1.44,
+        breakevenLabel: 'Year 1–2',
+        breakevenStart: 1,
+        rowInsight: 'Low investment with modest NPV; best suited if capital preservation is priority.'
+      },
+      shadow: {
+        name: 'The Shadow Protocol',
+        icon: '🎬',
+        type: 'Action Feature Film',
+        investment: 50,
+        cashFlows: [5, 14, 27, 24, 17],
+        exitValue: 28,
+        totalCF: 115,
+        ratio: 2.30,
+        breakevenLabel: 'Year 3–4',
+        breakevenStart: 3,
+        rowInsight: 'Large investment with high absolute returns, but higher discount rate significantly reduces NPV.'
+      },
+      silk: {
+        name: 'Silk and Mahogany',
+        icon: '👗',
+        type: '8-Episode Period Drama',
+        investment: 25,
+        cashFlows: [15, 12, 8.5, 5, 3.5],
+        exitValue: 8,
+        totalCF: 52,
+        ratio: 2.08,
+        breakevenLabel: 'Year 1–2',
+        breakevenStart: 1,
+        rowInsight: 'Balanced risk-return profile with strong NPV relative to investment size.'
+      }
+    };
+
+    const COLUMN_INSIGHTS = {
+      investment: {
+        title: 'Investment Comparison',
+        text: 'Nomadic Nation requires the least capital ($8M), while Shadow Protocol demands significantly more ($50M). Consider your available budget and risk appetite.'
+      },
+      cashProduced: {
+        title: 'Cash Produced Comparison',
+        text: 'Shadow Protocol generates the most total cash ($115M), but this must be weighed against its higher investment requirement and longer payback period.'
+      },
+      ratio: {
+        title: 'Cash Multiple Comparison',
+        text: 'Shadow Protocol has the highest multiple (2.30x), but all three projects return more than invested. Higher multiples mean more efficient use of capital.'
+      },
+      breakeven: {
+        title: 'Breakeven Comparison',
+        text: 'Nomadic Nation and Silk break even fastest (Year 1-2), while Shadow Protocol takes until Year 3-4. Faster breakeven reduces risk.'
+      },
+      rate: {
+        title: 'Discount Rate Comparison',
+        text: 'Higher risk projects require higher discount rates, which reduces their NPV more significantly.'
+      },
+      npv: {
+        title: 'NPV Comparison',
+        text: 'NPV shows the value created above the required return. The winner depends on which discount rates you assigned.'
+      },
+      irr: {
+        title: 'IRR Comparison',
+        text: 'IRR is independent of discount rate choice. It shows the actual return rate each project generates.'
+      }
+    };
+
+    let currentProject = 'nomadic';
+    let selectedRates = { nomadic: null, shadow: null, silk: null };
+
+    function selectProject(project) {
+      currentProject = project;
+      document.querySelectorAll('.project-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`.project-btn[data-project="${project}"]`).classList.add('active');
+
+      // Reset rate selection display
+      document.querySelectorAll('.rate-option').forEach(opt => opt.classList.remove('selected'));
+      if (selectedRates[project]) {
+        document.querySelector(`.rate-option[data-rate="${selectedRates[project]}"]`).classList.add('selected');
+        document.getElementById('results-section').classList.add('unlocked');
+        updateResults();
+      } else {
+        document.getElementById('results-section').classList.remove('unlocked');
+      }
+
+      renderCFTable();
+    }
+
+    function selectRate(rate) {
+      selectedRates[currentProject] = rate;
+      document.querySelectorAll('.rate-option').forEach(opt => opt.classList.remove('selected'));
+      document.querySelector(`.rate-option[data-rate="${rate}"]`).classList.add('selected');
+
+      document.getElementById('results-section').classList.add('unlocked');
+      document.querySelector(`.project-btn[data-project="${currentProject}"]`).classList.add('complete');
+
+      updateResults();
+      renderCompareTable();
+    }
+
+    function renderCFTable() {
+      const p = PROJECTS[currentProject];
+      const cfWithExit = [...p.cashFlows];
+      cfWithExit[4] = cfWithExit[4] + p.exitValue;
+
+      document.getElementById('cf-table').innerHTML = `
+        <thead>
+          <tr>
+            <th class="row-header"></th>
+            <th>Year 0</th>
+            <th>Year 1</th>
+            <th>Year 2</th>
+            <th>Year 3</th>
+            <th>Year 4</th>
+            <th>Year 5</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-header">Net Cash Flow</td>
+            <td class="cell-negative">($${p.investment}M)</td>
+            ${p.cashFlows.map(cf => `<td class="${cf > 0 ? 'cell-positive' : 'cell-zero'}">${cf > 0 ? '$' + cf + 'M' : '$0'}</td>`).join('')}
+          </tr>
+          <tr class="exit-row">
+            <td class="row-header">Exit Value</td>
+            <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
+            <td class="cell-positive">$${p.exitValue}M</td>
+          </tr>
+          <tr>
+            <td class="row-header"><strong>Total</strong></td>
+            <td class="cell-negative"><strong>($${p.investment}M)</strong></td>
+            ${cfWithExit.map((cf, i) => `<td class="${cf > 0 ? 'cell-positive' : 'cell-zero'}"><strong>${cf > 0 ? '$' + cf + 'M' : '$0'}</strong></td>`).join('')}
+          </tr>
+        </tbody>
+      `;
+    }
+
+    function discountFactor(year, rate) {
+      return 1 / Math.pow(1 + rate / 100, year);
+    }
+
+    function calculateNPV(project, rate) {
+      const p = PROJECTS[project];
+      const cfWithExit = [...p.cashFlows];
+      cfWithExit[4] = cfWithExit[4] + p.exitValue;
+
+      let npv = -p.investment;
+      for (let i = 0; i < cfWithExit.length; i++) {
+        npv += cfWithExit[i] * discountFactor(i + 1, rate);
+      }
+      return npv;
+    }
+
+    function calculateIRR(project) {
+      const p = PROJECTS[project];
+      const cfWithExit = [...p.cashFlows];
+      cfWithExit[4] = cfWithExit[4] + p.exitValue;
+
+      let irr = 0.1;
+      for (let iter = 0; iter < 100; iter++) {
+        let npv = -p.investment;
+        let dnpv = 0;
+        for (let i = 0; i < cfWithExit.length; i++) {
+          const t = i + 1;
+          npv += cfWithExit[i] / Math.pow(1 + irr, t);
+          dnpv -= t * cfWithExit[i] / Math.pow(1 + irr, t + 1);
+        }
+        if (Math.abs(dnpv) < 0.0001) break;
+        const newIrr = irr - npv / dnpv;
+        if (Math.abs(newIrr - irr) < 0.0001) break;
+        irr = newIrr;
+      }
+      return irr * 100;
+    }
+
+    function updateResults() {
+      const p = PROJECTS[currentProject];
+      const rate = selectedRates[currentProject];
+      const cfWithExit = [...p.cashFlows];
+      cfWithExit[4] = cfWithExit[4] + p.exitValue;
+
+      const discountedCFs = cfWithExit.map((cf, i) => cf * discountFactor(i + 1, rate));
+      const npv = calculateNPV(currentProject, rate);
+      const irr = calculateIRR(currentProject);
+
+      document.getElementById('pv-table').innerHTML = `
+        <thead>
+          <tr>
+            <th class="row-header">At ${rate}% Discount Rate</th>
+            <th>Year 0</th>
+            <th>Year 1</th>
+            <th>Year 2</th>
+            <th>Year 3</th>
+            <th>Year 4</th>
+            <th>Year 5</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-header">Discount Factor</td>
+            <td>1.000</td>
+            ${[1,2,3,4,5].map(y => `<td>${discountFactor(y, rate).toFixed(3)}</td>`).join('')}
+          </tr>
+          <tr class="discount-row">
+            <td class="row-header">Present Value</td>
+            <td class="cell-negative">($${p.investment.toFixed(2)}M)</td>
+            ${discountedCFs.map(pv => `<td class="${pv > 0 ? 'cell-positive' : 'cell-zero'}">${pv > 0 ? '$' + pv.toFixed(2) + 'M' : '$0'}</td>`).join('')}
+          </tr>
+        </tbody>
+      `;
+
+      document.getElementById('npv-result').textContent = '$' + npv.toFixed(2) + 'M';
+      document.getElementById('irr-result').textContent = irr.toFixed(0) + '%';
+    }
+
+    function renderCompareTable() {
+      const tbody = document.getElementById('compare-body');
+
+      // Check column completeness
+      const allRatesSelected = selectedRates.nomadic && selectedRates.shadow && selectedRates.silk;
+
+      // Find winners for Chapter 1 metrics (these are always available)
+      let maxRatio = -Infinity;
+      let ratioWinner = null;
+      let minBreakeven = Infinity;
+      let breakevenWinner = null;
+      ['nomadic', 'shadow', 'silk'].forEach(key => {
+        if (PROJECTS[key].ratio > maxRatio) {
+          maxRatio = PROJECTS[key].ratio;
+          ratioWinner = key;
+        }
+        if (PROJECTS[key].breakevenStart < minBreakeven) {
+          minBreakeven = PROJECTS[key].breakevenStart;
+          breakevenWinner = key;
+        }
+      });
+
+      // Find winners for Chapter 2 metrics
+      let maxNPV = -Infinity;
+      let maxIRR = -Infinity;
+      let npvWinner = null;
+      let irrWinner = null;
+
+      if (allRatesSelected) {
+        ['nomadic', 'shadow', 'silk'].forEach(key => {
+          const npv = calculateNPV(key, selectedRates[key]);
+          const irr = calculateIRR(key);
+          if (npv > maxNPV) { maxNPV = npv; npvWinner = key; }
+          if (irr > maxIRR) { maxIRR = irr; irrWinner = key; }
+        });
+      }
+
+      let html = '';
+      ['nomadic', 'shadow', 'silk'].forEach(key => {
+        const p = PROJECTS[key];
+        const rate = selectedRates[key];
+        const hasRate = rate !== null;
+        const npv = hasRate ? calculateNPV(key, rate) : null;
+        const irr = hasRate ? calculateIRR(key) : null;
+        const rowComplete = hasRate;
+
+        html += `<tr>
+          <td class="project-col">
+            <div class="project-name-row">
+              <span>${p.icon} ${p.name}</span>
+              ${rowComplete ? `<button class="analyze-btn" onclick="showAnalyze('${key}')">Analyze</button>` : ''}
+            </div>
+          </td>
+          <td class="filled">$${p.investment}M</td>
+          <td class="filled">$${p.totalCF}M</td>
+          <td class="${key === ratioWinner ? 'winner' : 'filled'}">${p.ratio.toFixed(2)}x</td>
+          <td class="${p.breakevenStart === minBreakeven ? 'winner' : 'filled'}">${p.breakevenLabel}</td>
+          <td class="${hasRate ? 'filled' : 'empty'}" onclick="${hasRate ? `goToProject('${key}')` : ''}">
+            ${hasRate ? `${rate}%<span class="cell-tooltip">Go to calculation</span>` : '—'}
+          </td>
+          <td class="${hasRate ? (key === npvWinner ? 'winner' : 'filled') : 'empty'}" onclick="${hasRate ? `goToProject('${key}')` : ''}">
+            ${hasRate ? `$${npv.toFixed(2)}M<span class="cell-tooltip">Go to calculation</span>` : '—'}
+          </td>
+          <td class="${hasRate ? (key === irrWinner ? 'winner' : 'filled') : 'empty'}" onclick="${hasRate ? `goToProject('${key}')` : ''}">
+            ${hasRate ? `${irr.toFixed(0)}%<span class="cell-tooltip">Go to calculation</span>` : '—'}
+          </td>
+        </tr>`;
+      });
+
+      // Compare buttons row
+      html += `<tr class="compare-buttons-row">
+        <td></td>
+        <td><button class="compare-btn" onclick="showCompare('investment')">Compare</button></td>
+        <td><button class="compare-btn" onclick="showCompare('cashProduced')">Compare</button></td>
+        <td><button class="compare-btn" onclick="showCompare('ratio')">Compare</button></td>
+        <td><button class="compare-btn" onclick="showCompare('breakeven')">Compare</button></td>
+        <td>${allRatesSelected ? `<button class="compare-btn" onclick="showCompare('rate')">Compare</button>` : ''}</td>
+        <td>${allRatesSelected ? `<button class="compare-btn" onclick="showCompare('npv')">Compare</button>` : ''}</td>
+        <td>${allRatesSelected ? `<button class="compare-btn" onclick="showCompare('irr')">Compare</button>` : ''}</td>
+      </tr>`;
+
+      tbody.innerHTML = html;
+    }
+
+    function goToProject(project) {
+      switchTab('exercise');
+      selectProject(project);
+    }
+
+    function showAnalyze(project) {
+      const p = PROJECTS[project];
+      document.getElementById('modal-title').textContent = `${p.icon} ${p.name}`;
+      document.getElementById('modal-text').textContent = p.rowInsight;
+      document.getElementById('modal-overlay').classList.add('show');
+    }
+
+    function showCompare(column) {
+      document.getElementById('modal-title').textContent = COLUMN_INSIGHTS[column].title;
+      document.getElementById('modal-text').textContent = COLUMN_INSIGHTS[column].text;
+      document.getElementById('modal-overlay').classList.add('show');
+    }
+
+    function closeModal() {
+      document.getElementById('modal-overlay').classList.remove('show');
+    }
+
+    function switchTab(tab) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      if (tab === 'exercise') {
+        document.querySelector('.tab:first-child').classList.add('active');
+        document.getElementById('exercise-tab').classList.add('active');
+      } else {
+        document.getElementById('compare-tab').classList.add('active');
+        document.getElementById('compare-tab-content').classList.add('active');
+      }
+    }
+
+    // Initialize
+    renderCFTable();
+    renderCompareTable();
+  </script>
+</body>
+</html>

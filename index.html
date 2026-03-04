@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Widget Showcase | Fictitious</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Battambang:wght@400;700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-blue-900: #0e0039;
+      --color-blue-800: #12004a;
+      --color-blue-600: #586bc8;
+      --color-blue-400: #bdc4ea;
+      --color-gray-800: #212b36;
+      --color-gray-600: #637381;
+      --color-gray-200: #f4f6f8;
+      --color-gray-100: #f9fafb;
+      --color-white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Public Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--color-gray-100);
+      min-height: 100vh;
+      color: var(--color-gray-800);
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--color-blue-900), var(--color-blue-800));
+      color: var(--color-white);
+      padding: 48px 32px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-family: 'Battambang', 'Public Sans', sans-serif;
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .header p {
+      color: var(--color-blue-400);
+      font-size: 16px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .case-context {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 16px 24px;
+      margin-top: 24px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 14px;
+      color: var(--color-blue-400);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    .chapter-card {
+      background: var(--color-white);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(14, 0, 57, 0.06);
+      border: 2px solid var(--color-gray-200);
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    .chapter-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(14, 0, 57, 0.12);
+      border-color: var(--color-blue-600);
+    }
+
+    .chapter-card-inner {
+      display: flex;
+      align-items: center;
+      padding: 24px;
+      gap: 20px;
+    }
+
+    .chapter-icon {
+      font-size: 40px;
+      width: 70px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-gray-100);
+      border-radius: 12px;
+      flex-shrink: 0;
+    }
+
+    .chapter-content {
+      flex: 1;
+    }
+
+    .chapter-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--color-gray-600);
+      margin-bottom: 4px;
+    }
+
+    .chapter-title {
+      font-family: 'Battambang', 'Public Sans', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--color-gray-800);
+      margin-bottom: 6px;
+    }
+
+    .chapter-desc {
+      font-size: 14px;
+      color: var(--color-gray-600);
+      line-height: 1.5;
+    }
+
+    .chapter-arrow {
+      font-size: 20px;
+      color: var(--color-gray-600);
+    }
+
+    .chapter-card:hover .chapter-arrow {
+      color: var(--color-blue-600);
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>Greenlighting the Future</h1>
+    <p>Interactive widgets for Fictitious's original content investment decision</p>
+    <div class="case-context">
+      <strong>The Challenge:</strong> Three finalist projects, one greenlight. Analyze financials, weigh trade-offs, and champion your recommendation.
+    </div>
+  </header>
+
+  <div class="container">
+    <a href="ch1-spreadsheet.html" class="chapter-card">
+      <div class="chapter-card-inner">
+        <div class="chapter-icon">📊</div>
+        <div class="chapter-content">
+          <div class="chapter-label">Chapter 1</div>
+          <div class="chapter-title">Cash Flow Analysis</div>
+          <div class="chapter-desc">Calculate investment, cash produced, and breakeven for each project</div>
+        </div>
+        <div class="chapter-arrow">→</div>
+      </div>
+    </a>
+
+    <a href="ch2-spreadsheet.html" class="chapter-card">
+      <div class="chapter-card-inner">
+        <div class="chapter-icon">📈</div>
+        <div class="chapter-content">
+          <div class="chapter-label">Chapter 2</div>
+          <div class="chapter-title">NPV & IRR Analysis</div>
+          <div class="chapter-desc">Apply discount rates based on risk to find net present value</div>
+        </div>
+        <div class="chapter-arrow">→</div>
+      </div>
+    </a>
+
+    <a href="ch3-spreadsheet.html" class="chapter-card">
+      <div class="chapter-card-inner">
+        <div class="chapter-icon">📋</div>
+        <div class="chapter-content">
+          <div class="chapter-label">Chapter 3</div>
+          <div class="chapter-title">Executive Summary</div>
+          <div class="chapter-desc">Compare all metrics side-by-side and select your recommendation</div>
+        </div>
+        <div class="chapter-arrow">→</div>
+      </div>
+    </a>
+  </div>
+</body>
+</html>
