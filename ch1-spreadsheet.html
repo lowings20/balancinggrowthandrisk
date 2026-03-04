@@ -819,7 +819,7 @@
             <td class="row-header">Total Cash Flow</td>
             <td class="cell-negative">($${p.investment}M)</td>
             ${totalCFWithExit.map(cf => `<td class="${cf > 0 ? 'cell-positive' : 'cell-zero'}">${cf > 0 ? '$' + cf + 'M' : '$0'}</td>`).join('')}
-            <td class="cell-positive">$${p.totalCF}M</td>
+            <td class="cell-positive">$${p.cumulative[p.cumulative.length - 1]}M</td>
           </tr>
           <tr class="cumulative-row">
             <td class="row-header">Cumulative Cash Flow</td>
