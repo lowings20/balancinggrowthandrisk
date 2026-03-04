@@ -205,21 +205,33 @@
       border-top: 1px dashed #d1d5db !important;
     }
 
-    .clickable-header {
+    .clickable-cell {
       cursor: pointer;
       position: relative;
     }
 
-    .clickable-header:hover {
-      background: #e0e7ff !important;
+    .clickable-cell:hover {
+      background: #dcfce7 !important;
     }
 
-    .clickable-header .click-hint {
-      display: block;
+    .info-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 14px;
+      height: 14px;
+      background: #d1d5db;
+      border-radius: 50%;
       font-size: 9px;
-      font-weight: 400;
+      font-weight: 700;
       color: #6b7280;
-      margin-top: 2px;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+
+    .clickable-cell:hover .info-badge {
+      background: #3b82f6;
+      color: white;
     }
 
     /* Input section */
@@ -792,7 +804,7 @@
             <th>Year 2</th>
             <th>Year 3</th>
             <th>Year 4</th>
-            <th class="clickable-header" onclick="showExitModal('${key}')">Year 5<span class="click-hint">click for details</span></th>
+            <th>Year 5</th>
             <th>Total</th>
           </tr>
         </thead>
@@ -806,14 +818,9 @@
           <tr>
             <td class="row-header">Net Cash Flow</td>
             <td>—</td>
-            ${p.cashFlows.map(cf => `<td class="${cf > 0 ? 'cell-positive' : 'cell-zero'}">${cf > 0 ? '$' + cf + 'M' : '$0'}</td>`).join('')}
-            <td class="cell-positive">$${p.cashFlows.reduce((a,b)=>a+b,0)}M</td>
-          </tr>
-          <tr class="exit-row">
-            <td class="row-header">+ Exit Value</td>
-            <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
-            <td class="cell-positive">$${p.exitValue}M</td>
-            <td class="cell-positive">$${p.exitValue}M</td>
+            ${p.cashFlows.slice(0, 4).map(cf => `<td class="${cf > 0 ? 'cell-positive' : 'cell-zero'}">${cf > 0 ? '$' + cf + 'M' : '$0'}</td>`).join('')}
+            <td class="cell-positive clickable-cell" onclick="showExitModal('${key}')">$${p.cashFlows[4] + p.exitValue}M <span class="info-badge">i</span></td>
+            <td class="cell-positive">$${p.totalCF}M</td>
           </tr>
           <tr class="total-row">
             <td class="row-header">Total Cash Flow</td>
